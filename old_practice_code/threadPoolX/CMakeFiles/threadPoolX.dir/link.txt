@@ -1,0 +1,2 @@
+/usr/bin/ar cr libthreadPoolX.a  CMakeFiles/threadPoolX.dir/threadPoolX.cpp.o
+/usr/bin/ranlib libthreadPoolX.a

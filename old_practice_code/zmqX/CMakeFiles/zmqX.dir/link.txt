@@ -1,0 +1,1 @@
+/usr/bin/c++   -std=c++11    CMakeFiles/zmqX.dir/zmqX.cpp.o  -o zmqX -rdynamic -lzmq 

@@ -1,0 +1,1 @@
+/home/sung/Documents/practice/logSystemX/CMakeFiles/logSystemX.dir

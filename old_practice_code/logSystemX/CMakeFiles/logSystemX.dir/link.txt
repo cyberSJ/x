@@ -1,0 +1,1 @@
+/usr/bin/c++   -std=c++11 -g    CMakeFiles/logSystemX.dir/boostTestXMain.cpp.o CMakeFiles/logSystemX.dir/logSystemX.cpp.o  -o logSystemX -rdynamic /usr/local/lib/libboost_log.so /usr/local/lib/libboost_log_setup.so -lboost_thread-mt -lboost_system-mt -lboost_unit_test_framework-mt -Wl,-rpath,/usr/local/lib 

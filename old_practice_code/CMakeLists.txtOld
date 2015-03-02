@@ -1,0 +1,70 @@
+# As of Oct. 14th 2013, I don't know why we have add these 4 lines below, and what the difference between init and non-init variables are.
+set(CMAKE_C_COMPILER_INIT gcc)
+set(CMAKE_CXX_COMPILTER_INIT g++)
+set(CMAKE_C_COMPILER gcc)
+set(CMAKE_CXX_COMPILER g++)
+
+cmake_minimum_required(VERSION 2.8)
+project(firstCmake)
+# The version number.
+set (firstCmake_VERSION_MAJOR 1)
+set (firstCmake_VERSION_MINOR 0)
+set (myNumber 4)
+
+set (CMAKE_CXX_FLAGS "-std=c++11")
+
+# should I use my custom add function?
+option (USE_MYADD "Use my own custom add implementation" ON)
+
+# Does this system provide the log and exp functions?
+# Important to do this before configure_file()
+#include (CheckFunctionExists.cmake)
+#check_function_exists (log HAVE_LOG)
+#check_function_exists (exp HAVE_EXP)
+
+# configure a header file to pass some of the Cmake settings
+# to the source code
+configure_file(
+	"${PROJECT_SOURCE_DIR}/cmakeConfig.h.in"
+	"${PROJECT_BINARY_DIR}/cmakeConfig.h"
+	)
+
+# add the binary dir to the search path for include files
+# so that cmake can the files. (-I flag) (i.e for the linker
+# and not for cmake)
+include_directories("${PROJECT_BINARY_DIR}")
+
+# Add my custom library to cmake?
+if (USE_MYADD)
+	# run the command below so that add_subdirectory can know the location of the subdirectory.
+	include_directories("${PROJECT_SOURCE_DIR}/mylib")
+	# The library will get built. I think this is more for cmake
+	# and not for the linker.
+	add_subdirectory(mylib)		# <-- name of directory
+	# Append this library to the list of library to be linked
+	set(EXTRA_LIBS ${EXTRA_LIBS} customLibrary)
+endif (USE_MYADD)
+	
+
+
+
+#add_executable(cmakeX cmakeX.cpp)
+#target_link_libraries(cmakeX ${EXTRA_LIBS}) # <-- list of names of library
+#
+#install (TARGETS cmakeX DESTINATION bin)
+#install (FILES "${PROJECT_BINARY_DIR}/cmakeConfig.h" 
+#	 DESTINATION include)
+#
+#add_test (myTest1 cmakeX)
+#set_tests_properties(myTest1 PROPERTIES PASS_GREULAR_EXPRESSION "25 is 5")
+
+
+#add_executable(etcX etcX.cpp)
+
+SET(Boost_USE_STATIC_LIBS ON)
+FIND_PACKAGE(Boost 1.54 COMPONENTS log REQUIRED)
+FIND_PACKAGE(Threads)
+#INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIR})
+add_executable(boostLogX boostLogX.cpp)
+TARGET_LINK_LIBRARIES(boostLogX ${Boost_LOG_LIBRARY} ${CMAKE_THREAD_LIBS_INIT})
+ADD_DEFINITIONS(-DBOOST_ALL_DYN_LINK)	# because my boost is compiled as dynamic library I need to link dynamically in cmake

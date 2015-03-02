@@ -1,0 +1,1 @@
+/usr/bin/c++   -std=c++11 -g    CMakeFiles/severityFormatTestX.dir/severityFormatTestX.cpp.o  -o severityFormatTestX -rdynamic /usr/local/lib/libboost_log.so /usr/local/lib/libboost_log_setup.so -lboost_thread-mt -lboost_system-mt -Wl,-rpath,/usr/local/lib 

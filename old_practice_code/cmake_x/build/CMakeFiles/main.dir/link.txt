@@ -1,0 +1,1 @@
+/usr/bin/c++   -Wall -Wextra -Werror    CMakeFiles/main.dir/main.cpp.o  -o main -rdynamic gmock-1.7.0/libgmock.a todo/libtodoLibrary.so -lpthread -Wl,-rpath,/home/sung/Documents/practice/cmake_x/build/todo 

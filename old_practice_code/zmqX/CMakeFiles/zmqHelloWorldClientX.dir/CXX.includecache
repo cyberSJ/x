@@ -1,0 +1,30 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/sung/Documents/practice/zmqX/zmqHelloWorldClientX.cpp
+zmq.hpp
+/home/sung/Documents/practice/zmqX/zmq.hpp
+string
+-
+iostream
+-
+
+cppzmq/zmq.hpp
+zmq.h
+-
+algorithm
+-
+cassert
+-
+cstring
+-
+string
+-
+exception
+-
+

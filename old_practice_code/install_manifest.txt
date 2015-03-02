@@ -1,0 +1,4 @@
+/usr/local/bin/cmakeX
+/usr/local/include/cmakeConfig.h
+/usr/local/bin/libcustomLibrary.a
+/usr/local/include/add.h

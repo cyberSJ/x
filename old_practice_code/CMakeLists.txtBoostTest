@@ -1,0 +1,6 @@
+cmake_minimum_required(VERSION 2.8)
+add_definitions(-DBOOST_ALL_DYN_LINK)	
+add_executable(boostTestX boostTestX.cpp boostTestXMain.cpp)
+set(CMAKE_CXX_FLAGS "-std=c++11")
+target_link_libraries(boostTestX boost_unit_test_framework.so)
+#target_link_libraries(boostCircBuf

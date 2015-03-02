@@ -1,0 +1,1 @@
+/usr/bin/c++   -std=c++11    CMakeFiles/zmqHelloWorldClientX.dir/zmqHelloWorldClientX.cpp.o  -o zmqHelloWorldClientX -rdynamic -lzmq 
