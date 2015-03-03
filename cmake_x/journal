@@ -1,2 +1,11 @@
 3/3/2015
 Created the cmake_x directory to exercise cmake skills.
+Practicing following commands:
+	cmake_minimum_required()
+
+When I run "cmake ." to run CMakeLists.txt, I got following error:
+-- The CXX compiler identification is unknown
+CMake Error: your CXX compiler: "CMAKE_CXX_COMPILER-NOTFOUND" was not found.   Please set CMAKE_CXX_COMPILER to a valid compiler path or name.
+
+Then the solution is presented here:
+http://xubuntugeek.blogspot.com/2012/06/fix-cmake-cmakecxxcompiler-notfound.html
