@@ -2,6 +2,7 @@
 Created the cmake_x directory to exercise cmake skills.
 Practicing following commands:
 	cmake_minimum_required()
+	project()
 
 When I run "cmake ." to run CMakeLists.txt, I got following error:
 -- The CXX compiler identification is unknown
