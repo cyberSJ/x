@@ -24,3 +24,7 @@ CMake Error: The source "/home/sung/repo/x/cmake_x/cmake/CMakeLists.txt" does no
 ----------------
 
 When the CMakeLists.txt is moved to different directory, I think the cache that remembered the previous CMakeLists.txt file location needs to be updated.
+
+---------------
+
+It's generally a good idea to make CMakeLists.txt to live under a directory called "cmake". I'm not sure why yet, but that "cmake" directoy is going to include files relate to cmake, such as .cmake modules.
