@@ -19,12 +19,13 @@ message(STATUS "top dir: " ${TOP_DIR})
 
 # Does CMake transfer the value that has been set() down to other CMakeLists.txt
 # files that are invoked later in this top CMakeLists.txt file?: yes
-set(transferrable_variable "I can see this variable in submodule!")
+set(transferrable_variable "I can see this variable in submodule and "
+    "CMakeLists.txt!")
 set(CMAKE_MODULE_PATH ${TOP_DIR}/sub_directory/cmake)
 include(some_module)
 add_subdirectory(${TOP_DIR}/sub_directory/cmake ${TOP_DIR}/sub_directory/build)
 # Question: How do you not manuaully specify **/cmake when you include a
-# CMakeLists.txt?
+# CMakeLists.txt?: You can't.
 
 # Trying to set different data types in one variable
 set(mixed_variable 1 "one")
@@ -32,3 +33,5 @@ message(STATUS "mixed_variable: " ${mixed_variable})
 # Result: -- mixed_variable: 1one
 
 add_executable(test ${TOP_DIR}/test.cpp)
+
+execute_process(COMMAND ${TOP_DIR}/print_hello)
