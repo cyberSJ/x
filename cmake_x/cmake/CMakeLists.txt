@@ -34,4 +34,17 @@ message(STATUS "mixed_variable: " ${mixed_variable})
 
 add_executable(test ${TOP_DIR}/test.cpp)
 
+# Running some executable in its directory.
 execute_process(COMMAND ${TOP_DIR}/print_hello)
+message(STATUS "install prefix     = " ${CMAKE_INSTALL_PREFIX})
+set(CMAKE_INSTALL_PREFIX ${TOP_DIR}/install)
+message(STATUS "new install prefix = " ${CMAKE_INSTALL_PREFIX})
+# new install prefix = ${TOP_DIR}/install (not ${TOP_DIR}/install/usr/local as
+# written in the cmake documentation).
+
+# Run some executable that installs a whole another cmake project. Since the
+# project is intended to be a totally independent project than this one, the
+# install path of the external project should not interfere with this current
+# project.
+execute_process(COMMAND ./install_some_project
+                WORKING_DIRECTORY ${TOP_DIR}/some_project/)

@@ -1,0 +1,13 @@
+#!/bin/bash
+
+mkdir build
+cd build
+
+echo cmake install prefix = $CMAKE_INSTALL_PREFIX
+# nothing is specified in my computer.
+
+# For my computer, -DCMAKE_INSTALL_PREFIX is no use. So either one is same.
+# Just specify the install path in CMakeLists.txt
+#cmake -DCMAKE_INSTALL_PREFIX=../install ../cmake
+cmake ../cmake
+make -j4 && make install
