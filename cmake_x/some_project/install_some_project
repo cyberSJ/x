@@ -1,6 +1,7 @@
 #!/bin/bash
 
-mkdir build
+# -p is "no error if exsiting and create parent directory as needed"
+mkdir -p build
 cd build
 
 echo cmake install prefix = $CMAKE_INSTALL_PREFIX

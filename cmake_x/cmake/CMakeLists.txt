@@ -48,3 +48,8 @@ message(STATUS "new install prefix = " ${CMAKE_INSTALL_PREFIX})
 # project.
 execute_process(COMMAND ./install_some_project
                 WORKING_DIRECTORY ${TOP_DIR}/some_project/)
+
+# Practicing include .cmake module (even though I did it before)
+list(APPEND CMAKE_MODULE_PATH ${TOP_DIR}/sub_direcotry/cmake)
+include(some_module)
+include(some_module_2)
