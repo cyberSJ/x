@@ -65,3 +65,7 @@ else()
     message(STATUS "execute_some_process found.")
     message(STATUS "result = " ${EXECUTE_PROCESS_EXE})
 endif()
+
+# Make EXECUTE_PROCESS_EXE variable appear only on "advanced" option in cmake
+# gui.
+mark_as_advanced(EXECUTE_PROCESS_EXE)
