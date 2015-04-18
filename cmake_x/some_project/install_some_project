@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# TODO: check if build directory exists and if yes remove it for a clean build.
+
 # -p is "no error if exsiting and create parent directory as needed"
 mkdir -p build
 cd build

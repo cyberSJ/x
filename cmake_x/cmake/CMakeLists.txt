@@ -49,7 +49,19 @@ message(STATUS "new install prefix = " ${CMAKE_INSTALL_PREFIX})
 execute_process(COMMAND ./install_some_project
                 WORKING_DIRECTORY ${TOP_DIR}/some_project/)
 
-# Practicing include .cmake module (even though I did it before)
+# Include .cmake module (even though I did it before)
 list(APPEND CMAKE_MODULE_PATH ${TOP_DIR}/sub_direcotry/cmake)
 include(some_module)
 include(some_module_2)
+
+# Find a program. Does it execut it as well?: No, it just prints out the
+# location of the program
+find_program(EXECUTE_PROCESS_EXE
+             NAMES execute_some_process
+             PATHS ${TOP_DIR}/some_project/build)
+if (${EXECUTE_PROCESS_EXE} STREQUAL EXECUTE_PROCESS_EXE-NOTFOUND)
+    message(STATUS "execute_some_process is NOT found.")
+else()
+    message(STATUS "execute_some_process found.")
+    message(STATUS "result = " ${EXECUTE_PROCESS_EXE})
+endif()
