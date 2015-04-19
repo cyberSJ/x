@@ -34,7 +34,7 @@ message(STATUS "mixed_variable: " ${mixed_variable})
 
 add_executable(test ${TOP_DIR}/test.cpp)
 
-# Running some executable in its directory.
+# Running some executable in the directory where the executable is located.
 execute_process(COMMAND ${TOP_DIR}/print_hello)
 message(STATUS "install prefix     = " ${CMAKE_INSTALL_PREFIX})
 set(CMAKE_INSTALL_PREFIX ${TOP_DIR}/install)
@@ -45,7 +45,8 @@ message(STATUS "new install prefix = " ${CMAKE_INSTALL_PREFIX})
 # Run some executable that installs a whole another cmake project. Since the
 # project is intended to be a totally independent project than this one, the
 # install path of the external project should not interfere with this current
-# project.
+# project. WORKING_DREICTORY also affects the location where the COMMAND is
+# run.
 execute_process(COMMAND ./install_some_project
                 WORKING_DIRECTORY ${TOP_DIR}/some_project/)
 
@@ -69,3 +70,19 @@ endif()
 # Make EXECUTE_PROCESS_EXE variable appear only on "advanced" option in cmake
 # gui.
 mark_as_advanced(EXECUTE_PROCESS_EXE)
+
+# Use macro to set some variable with multiple values.
+macro(set_some_var target_var var1 var2 var3)
+    # You cannot set one of the arguments using the other arguments.
+    set(target_var ${var1} ${var2} ${var3})
+    message(STATUS "target var = " ${target_var})
+    set(var_using_argx ${ARGV1} ${ARGV2} ${ARGV3})
+    message(STATUS "var using arg" ${ARGC} " = " ${var_using_argx})
+    message(STATUS "remaining unused vars = " ${ARGN})
+endmacro()
+set_some_var(some_var "passing " "multiple " "values " 
+                      "leftoever " "arguments ")
+message(STATUS "some_var after marco = " ${some_var})
+# some_var is empty because you cannot set one of the arguments using the other
+# arguments.
+

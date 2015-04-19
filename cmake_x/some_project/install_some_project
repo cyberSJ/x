@@ -6,7 +6,8 @@
 mkdir -p build
 cd build
 
-echo cmake install prefix = $CMAKE_INSTALL_PREFIX
+# -- here is treated as a pure string.
+echo -- cmake install prefix = $CMAKE_INSTALL_PREFIX
 # nothing is specified in my computer.
 
 # For my computer, -DCMAKE_INSTALL_PREFIX is no use. So either one is same.
