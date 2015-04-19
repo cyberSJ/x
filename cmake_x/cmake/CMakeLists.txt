@@ -86,3 +86,39 @@ message(STATUS "some_var after marco = " ${some_var})
 # some_var is empty because you cannot set one of the arguments using the other
 # arguments.
 
+# Test STREQUAL
+set(some_string_1 "some_string_1")
+set(some_string_2 "some_string_2")
+set(some_string_3 ${some_string_1})
+set(some_string_4 ${some_string_1} " " ${some_string_2})
+
+if(NOT some_string_1 STREQUAL "some_string_1")
+    message(WARNING "some_string_1 not equal to each other")
+endif()
+if(NOT some_string_1 STREQUAL some_string_3)
+    message(WARNING "some_string_1 not equal to some_string_3")
+endif()
+# These are not equal because exapanding some_string_4 returns a multiple
+# argument and if() statement does not like that.
+#if(NOT some_string_4 STREQUAL "some_string_1 some_string_2")
+#    message(WARNING "4 4 not equal")
+#endif()
+#if(NOT ${some_string_4} STREQUAL "some_string_1 some_string_2")
+#    message(WARNING "4 4 not equal (expanded version)")
+#endif()
+# This doesn't work either because each item in the list is separated by ";" (I
+# originally though ";" wasn't there.
+#if(NOT "${some_string_4}" STREQUAL "some_string_1 some_string_2")
+#    message(STATUS "${some_string_4} = " "${some_string_4}")
+#    message(WARNING "4 4 not equal (double quote expanded version left)")
+#endif()
+# But this makes sense because they are both delimited by ";".
+if(NOT some_string_4 STREQUAL "${some_string_4}")
+    message(WARNING "4 4 not equal (double quote expanded version right)")
+else()
+    message(STATUS "${some_string_4} = " "${some_string_4}")
+endif()
+
+# Replace a part of the a string
+string(REPLACE "some" "other" output_string ${some_string_4})
+message(STATUS "output_string = " ${output_string})
