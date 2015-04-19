@@ -122,3 +122,9 @@ endif()
 # Replace a part of the a string
 string(REPLACE "some" "other" output_string ${some_string_4})
 message(STATUS "output_string = " ${output_string})
+# output_string = other_string_1 other_string_2
+
+# Determine a length of a list
+list(LENGTH some_string_4 len_some_string_4)
+message(STATUS "length of a list = " ${len_some_string_4})
+# length of a list = 3
