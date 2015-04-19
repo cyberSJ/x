@@ -128,3 +128,14 @@ message(STATUS "output_string = " ${output_string})
 list(LENGTH some_string_4 len_some_string_4)
 message(STATUS "length of a list = " ${len_some_string_4})
 # length of a list = 3
+
+# Get a part of a list. CMake is 0-based index
+list(GET some_string_4 0 2 partial_list)
+message(STATUS "partial list = " ${partial_list})
+# partial list = some_string_1som_string_2
+
+# Try to find a part of list. Return -1 if not found.
+# the <value> argument must match exactly with the partial.
+list(FIND some_string_4 "some_string_2" partial_found)
+message(STATUS "partial found? = " ${partial_found})
+# partial found? = 2
