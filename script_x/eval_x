@@ -1,5 +1,10 @@
 #!/bin/bash
 
+# Turn on verbose mode.
+# -x = displays how shell interpreted exapnsion of quoting.
+# -v = dipslays what commands were run originially.
+set -xv
+
 var_b=\$var_a
 var_a="echo var a"
 
