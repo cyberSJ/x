@@ -3,7 +3,12 @@
 # Turn on verbose mode.
 # -x = displays how shell interpreted exapnsion of quoting.
 # -v = dipslays what commands were run originially.
-set -xv
+#set -xv
+
+# However, it is not necessary to edit this script to add set -xv.
+# Just run this script with shell commamnd with option followed by the name of 
+# the script.
+# bash -xv ./eval_x
 
 var_b=\$var_a
 var_a="echo var a"
