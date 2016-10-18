@@ -1,0 +1,10 @@
+#!/bin/bash
+
+var_b=\$var_a
+var_a="echo var a"
+
+echo $var_b
+
+b=\$a
+a="foo"
+eval echo $b
