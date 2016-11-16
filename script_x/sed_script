@@ -1,0 +1,7 @@
+#!/bin/sed -f
+# Above commad's -f option means the next argument is the command script. But 
+# we are already in a script, so commands in next lines will be treated like 
+# arguments in script. Execute this script as <script_name> < <file_to_sed>
+s/this/that/
+s/is/are/
+s/heading/feet/
