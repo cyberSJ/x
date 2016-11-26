@@ -1,0 +1,5 @@
+#!/bin/bash
+# comment
+
+command="who | cut -f 1 -d\" \" | sort -u"
+eval ${command}
