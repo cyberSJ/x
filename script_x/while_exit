@@ -1,0 +1,10 @@
+#! /bin/bash
+
+trap 'echo "exitting..."; exit' 0
+trap 'echo "ctrl-c detected" 1>&2; exit' 1 2 15
+
+while :
+do
+	echo "in while loop. sleeping 1 second..."
+	sleep 1
+done

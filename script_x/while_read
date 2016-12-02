@@ -1,0 +1,8 @@
+#!/bin/bash
+
+# \c stops further output. "Further output" in this case is a newline char.
+while echo -e "Type something or ctrl-d to quit: \c This sentence will not be output."
+      read command
+do
+	echo "read ${command}"
+done

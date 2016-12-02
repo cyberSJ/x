@@ -1,0 +1,17 @@
+#!/bin/bash
+# Using while loop construct to handle different type of args differently.
+# Unlike for-loop-based construct, the while-loop-based construct allows grouping args into a set.
+
+while [ $# -gt 0 ]
+do
+	case $1 in
+		-a) echo "got -a option ${1}";;
+		-b) echo "got -b option ${1}"
+		    echo "following ${2} option read as part of b option" 
+		    # shift because we need to shift a total of 2.
+		    shift
+		    ;;
+		*) echo "default option read for ${1}";;
+	esac
+	shift
+done

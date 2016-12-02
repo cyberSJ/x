@@ -1,0 +1,12 @@
+#!/bin/bash
+
+while getopts "ab:" opt; do
+	case $opt in
+		a) echo "option -a detected";;
+		b) echo "option -b detected"
+		   echo "arg is $OPTARG"
+		   echo "second arg is $3"
+		   ;;
+		*) echo "nothing"
+	esac
+done

@@ -1,0 +1,4 @@
+#!/bin/bash
+
+echo "the variable: ${my_var:-hey}"
+echo "the variable: ${my_var}"

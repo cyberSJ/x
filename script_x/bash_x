@@ -1,0 +1,44 @@
+#!/bin/bash
+
+trap 'echo "signal caught"; exit 1' 1 2 15
+trap 'echo "signal QUIT caught"; exit 3' 3
+
+case ${TERM} in
+	screen) echo "I'm using screen" ;;
+	*) echo "In wildcard option" ;;
+esac
+
+if "$1"
+then
+	echo "true"
+else
+	echo "false"
+fi
+
+cat non_existing_file || {
+	echo "The file does not exist"
+	echo "Exitting..."
+}
+
+read_var=false
+until [[ ${read_var} -eq "true" ]]; do
+	echo "until is NOT done. type true to exit from the loop"
+	read read_var
+	sleep 3
+done
+echo "until is done"
+
+while false; do
+	echo "This should NOT be printed"
+	break
+done
+echo "while is done"
+
+echo "Type some things: "
+read read_var1 read_var2
+echo "Followings were read:"
+echo "read1: ${read_var1}"
+echo "read2: ${read_var2}"
+
+echo "sleeping for 60 seconds. Try pressing ctrl-c or ctrl-\\"
+sleep 60

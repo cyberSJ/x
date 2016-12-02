@@ -1,0 +1,7 @@
+#!/bin/bash
+
+for x in `cat`;
+do
+	echo "you typed $x"
+done
+

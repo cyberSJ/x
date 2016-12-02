@@ -1,0 +1,20 @@
+#!/bin/bash
+# Seems like "set <arg>" is like storing the output of <arg> into $1, $2, and so on.
+# Let's verify this.
+# usage: set_x a1 a2 a3
+
+original_args="$*"
+echo ${original_args}
+
+set arg1 arg2 arg3
+
+echo "arg1: $1"
+echo "arg2: $2"
+echo "arg3: $3"
+
+set ${original_args}
+echo "arg1: $1"
+echo "arg2: $2"
+echo "arg3: $3"
+
+# yes the theory is correct and verified.
