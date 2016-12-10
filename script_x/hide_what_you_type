@@ -1,0 +1,8 @@
+#!/bin/bash
+
+echo -e "Enter secret code: \c"
+stty -echo
+read ans
+stty echo
+
+echo "You entered: ${ans}"
