@@ -6,3 +6,4 @@ read ans
 stty echo
 
 echo "You entered: ${ans}"
+echo "this line has beend added"
