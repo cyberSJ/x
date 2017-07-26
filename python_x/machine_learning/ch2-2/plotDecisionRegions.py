@@ -1,8 +1,8 @@
 #!/usr/bin/python
 
-from matplotlib.colors import ListedColormap
 import numpy as np
 import matplotlib.pyplot as plt
+from matplotlib.colors import ListedColormap
 
 # Draws two classification regions with different colors.
 # X: N x M matrix. N = number of samples. M = number of features.
@@ -54,4 +54,3 @@ def plotDecisionRegions(X, y, classifier, resolution = 0.01):
                      c = listedColormap(idx),
                      marker = markers[idx],
                      label = classification )
-        

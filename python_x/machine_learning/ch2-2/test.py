@@ -6,9 +6,9 @@
 # Syntax: from <.py name> import <class name>
 from Perceptron import Perceptron
 from plotDecisionRegions import plotDecisionRegions
-import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
+import pandas as pd
 
 df = pd.read_csv(
         'https://archive.ics.uci.edu/ml/machine-learning-databases/iris/iris.data',
