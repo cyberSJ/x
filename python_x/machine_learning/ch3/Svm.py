@@ -22,7 +22,9 @@ X_train, X_test, y_train, y_test = train_test_split( X,
                                                      random_state = 0 )
 
 # Re-scale the input sample features so that each feature type is relatively 
-# comparable to each other.
+# comparable to each other. Reason for fiting the StandardScaler from the 
+# training data is because we assume we don't know anything about the test data 
+# samples.
 from sklearn.preprocessing import StandardScaler
 sc = StandardScaler()
 sc.fit( X_train )
