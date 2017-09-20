@@ -1,0 +1,12 @@
+background_b: 255
+background_g: 86
+background_r: 150
+rosdistro: 'kinetic
+
+  '
+roslaunch:
+  uris: {host_cyber_thinkpad__45023: 'http://cyber-thinkpad:45023/'}
+rosversion: '1.12.7
+
+  '
+run_id: 43c52b16-9d07-11e7-8802-68a3c4cb9169
