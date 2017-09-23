@@ -1,2 +1,11 @@
+# build artifacts 
 build/
+
+# generated install directory
 install/
+
+# ROS generated devel directory
+devel/
+
+# vim temp file
+*.swp
