@@ -10,6 +10,7 @@ project(using_markers)
 find_package(catkin REQUIRED COMPONENTS
   roscpp
   visualization_msgs
+  interactive_markers
 )
 
 ## System dependencies are found with CMake's conventions
@@ -135,6 +136,7 @@ include_directories(
 # add_executable(${PROJECT_NAME}_node src/using_markers_node.cpp)
 add_executable(basic_shapes src/basic_shapes.cpp)
 add_executable(points_and_lines src/points_and_lines.cpp)
+add_executable(simple_marker src/simple_marker.cpp)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -152,6 +154,7 @@ add_executable(points_and_lines src/points_and_lines.cpp)
 # )
 target_link_libraries(basic_shapes ${catkin_LIBRARIES})
 target_link_libraries(points_and_lines ${catkin_LIBRARIES})
+target_link_libraries(simple_marker ${catkin_LIBRARIES})
 
 #############
 ## Install ##
