@@ -1,6 +1,0 @@
-/home/sung/Documents/practice/cmake_x/build/gmock-1.7.0/CMakeFiles/gmock.dir
-/home/sung/Documents/practice/cmake_x/build/gmock-1.7.0/CMakeFiles/gmock_main.dir
-/home/sung/Documents/practice/cmake_x/build/gmock-1.7.0/gtest/CMakeFiles/gtest.dir
-/home/sung/Documents/practice/cmake_x/build/gmock-1.7.0/gtest/CMakeFiles/gtest_main.dir
-/home/sung/Documents/practice/cmake_x/build/CMakeFiles/main.dir
-/home/sung/Documents/practice/cmake_x/build/todo/CMakeFiles/todoLibrary.dir

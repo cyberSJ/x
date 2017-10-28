@@ -1,5 +1,0 @@
-INC = 
-LIB = 
-all:
-#IMPORTANT: -lboost_unit_test_framework must be put after .cpp
-	g++ -g -Wall -std=c++11 $(INC) $(LIB) -o boostTestX boostTestX.cpp -lboost_unit_test_framework 
