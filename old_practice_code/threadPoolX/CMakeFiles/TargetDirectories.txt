@@ -1,2 +1,0 @@
-/home/sung/Documents/practice/threadPoolX/CMakeFiles/mainX.dir
-/home/sung/Documents/practice/threadPoolX/CMakeFiles/threadPoolX.dir

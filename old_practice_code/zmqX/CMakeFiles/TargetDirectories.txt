@@ -1,2 +1,0 @@
-/home/sung/Documents/practice/zmqX/CMakeFiles/zmqHelloWorldClientX.dir
-/home/sung/Documents/practice/zmqX/CMakeFiles/zmqHelloWorldServerX.dir

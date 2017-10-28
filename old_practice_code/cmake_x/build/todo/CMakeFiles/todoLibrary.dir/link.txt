@@ -1,1 +1,0 @@
-/usr/bin/c++  -fPIC -Wall -Wextra -Werror   -shared -Wl,-soname,libtodoLibrary.so -o libtodoLibrary.so CMakeFiles/todoLibrary.dir/Todo.cpp.o 
