@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(beginner_tutorials)
+project(using_markers)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
 # add_compile_options(-std=c++11)
@@ -9,9 +9,7 @@ project(beginner_tutorials)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
   roscpp
-  rospy
-  std_msgs
-  message_generation
+  visualization_msgs
 )
 
 ## System dependencies are found with CMake's conventions
@@ -53,10 +51,6 @@ find_package(catkin REQUIRED COMPONENTS
 #   Message1.msg
 #   Message2.msg
 # )
-add_message_files(
-    FILES
-    Num.msg
-)
 
 ## Generate services in the 'srv' folder
 # add_service_files(
@@ -64,10 +58,6 @@ add_message_files(
 #   Service1.srv
 #   Service2.srv
 # )
-add_service_files(
-    FILES
-    AddTwoInts.srv
-)
 
 ## Generate actions in the 'action' folder
 # add_action_files(
@@ -79,12 +69,8 @@ add_service_files(
 ## Generate added messages and services with any dependencies listed here
 # generate_messages(
 #   DEPENDENCIES
-#   std_msgs
+#   visualization_msgs
 # )
-generate_messages(
-    DEPENDENCIES
-    std_msgs
-)
 
 ################################################
 ## Declare ROS dynamic reconfigure parameters ##
@@ -117,10 +103,9 @@ generate_messages(
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
 #  INCLUDE_DIRS include
-#  LIBRARIES beginner_tutorials
-#  CATKIN_DEPENDS roscpp rospy std_msgs
+#  LIBRARIES using_markers
+#  CATKIN_DEPENDS roscpp visualization_msgs
 #  DEPENDS system_lib
-    CATKIN_DEPENDS message_runtime
 )
 
 ###########
@@ -129,11 +114,14 @@ catkin_package(
 
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
-include_directories(include ${catkin_INCLUDE_DIRS})
+include_directories(
+# include
+  ${catkin_INCLUDE_DIRS}
+)
 
 ## Declare a C++ library
 # add_library(${PROJECT_NAME}
-#   src/${PROJECT_NAME}/beginner_tutorials.cpp
+#   src/${PROJECT_NAME}/using_markers.cpp
 # )
 
 ## Add cmake target dependencies of the library
@@ -144,11 +132,9 @@ include_directories(include ${catkin_INCLUDE_DIRS})
 ## Declare a C++ executable
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
-# add_executable(${PROJECT_NAME}_node src/beginner_tutorials_node.cpp)
-add_executable(talker src/talker.cpp)
-add_executable(listener src/listener.cpp)
-add_executable(add_two_ints_server src/add_two_ints_server.cpp)
-add_executable(add_two_ints_client src/add_two_ints_client.cpp)
+# add_executable(${PROJECT_NAME}_node src/using_markers_node.cpp)
+add_executable(basic_shapes src/basic_shapes.cpp)
+add_executable(points_and_lines src/points_and_lines.cpp)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -164,15 +150,8 @@ add_executable(add_two_ints_client src/add_two_ints_client.cpp)
 # target_link_libraries(${PROJECT_NAME}_node
 #   ${catkin_LIBRARIES}
 # )
-target_link_libraries(talker ${catkin_LIBRARIES})
-target_link_libraries(listener ${catkin_LIBRARIES})
-target_link_libraries(add_two_ints_server ${catkin_LIBRARIES})
-target_link_libraries(add_two_ints_client ${catkin_LIBRARIES})
-
-add_dependencies(talker beginner_tutorials_generate_message_cpp)
-add_dependencies(listener beginner_tutorials_generate_message_cpp)
-add_dependencies(add_two_ints_server beginner_tutorials_gencpp)
-add_dependencies(add_two_ints_client beginner_tutorials_gencpp)
+target_link_libraries(basic_shapes ${catkin_LIBRARIES})
+target_link_libraries(points_and_lines ${catkin_LIBRARIES})
 
 #############
 ## Install ##
@@ -214,7 +193,7 @@ add_dependencies(add_two_ints_client beginner_tutorials_gencpp)
 #############
 
 ## Add gtest based cpp test target and link libraries
-# catkin_add_gtest(${PROJECT_NAME}-test test/test_beginner_tutorials.cpp)
+# catkin_add_gtest(${PROJECT_NAME}-test test/test_using_markers.cpp)
 # if(TARGET ${PROJECT_NAME}-test)
 #   target_link_libraries(${PROJECT_NAME}-test ${PROJECT_NAME})
 # endif()
