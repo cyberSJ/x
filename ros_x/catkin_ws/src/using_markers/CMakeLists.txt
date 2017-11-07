@@ -138,6 +138,7 @@ add_executable(basic_shapes src/basic_shapes.cpp)
 add_executable(points_and_lines src/points_and_lines.cpp)
 add_executable(simple_marker src/simple_marker.cpp)
 add_executable(basic_controls src/basic_controls.cpp)
+add_executable(menu src/menu.cpp)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -157,6 +158,7 @@ target_link_libraries(basic_shapes ${catkin_LIBRARIES})
 target_link_libraries(points_and_lines ${catkin_LIBRARIES})
 target_link_libraries(simple_marker ${catkin_LIBRARIES})
 target_link_libraries(basic_controls ${catkin_LIBRARIES})
+target_link_libraries(menu ${catkin_LIBRARIES})
 
 #############
 ## Install ##

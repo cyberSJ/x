@@ -131,7 +131,7 @@ void makeButtonMarker( const tf::Vector3& position )
     int_marker.scale = 1;
 
     int_marker.name = "button";
-    int_marker.description = "Button\n(Left Click)";
+    int_marker.description = "Button\n(Left Click)"; // Shown in Rviz.
 
     InteractiveMarkerControl control;
     control.interaction_mode = InteractiveMarkerControl::BUTTON;
@@ -147,6 +147,98 @@ void makeButtonMarker( const tf::Vector3& position )
                          &processFeedback );
 }
 
+void make6DofMarker( bool fixed,
+                     unsigned int interaction_mode,
+                     const tf::Vector3& position,
+                     bool show_6dof )
+{
+    InteractiveMarker int_marker;
+    int_marker.header.frame_id = "base_link";
+    tf::pointTFToMsg( position, int_marker.pose.position );
+    int_marker.scale = 1;
+    int_marker.name = "simple_6dof";
+    int_marker.description = "Simple 6-DOF Control";
+
+    makeBoxControl( int_marker );
+    int_marker.controls[0].interaction_mode = interaction_mode;
+
+    InteractiveMarkerControl control;
+
+    if( fixed )
+    {
+        int_marker.name += "_fixed";
+        int_marker.description += "\n(fixed orientation)";
+        control.orientation_mode = InteractiveMarkerControl::FIXED;
+    }
+
+    if( interaction_mode != visualization_msgs::InteractiveMarkerControl::NONE )
+    {
+        std::string mode_text;
+        if( interaction_mode == visualization_msgs::InteractiveMarkerControl::MOVE_3D )
+        {
+            mode_text = "MOVE_3D";
+        }
+        if( interaction_mode == visualization_msgs::InteractiveMarkerControl::ROTATE_3D )
+        {
+            mode_text = "ROTATE_3D";
+        }
+        if( interaction_mode == visualization_msgs::InteractiveMarkerControl::MOVE_ROTATE_3D )
+        {
+            mode_text = "MOVE_ROTATE_3D";
+        }
+
+        int_marker.name += "_" + mode_text;
+        int_marker.description = std::string("3D Control") +
+                                 (show_6dof ? " + 6-DOF controls" : "") +
+                                 "\n" +
+                                 mode_text;
+    }
+
+    if( show_6dof )
+    {
+        control.orientation.w = 1;
+        control.orientation.x = 1;
+        control.orientation.y = 0;
+        control.orientation.z = 0;
+        control.name = "rotate_x";
+        control.interaction_mode = InteractiveMarkerControl::ROTATE_AXIS;
+        int_marker.controls.push_back( control );
+        control.name = "move_x";
+        control.interaction_mode = InteractiveMarkerControl::MOVE_AXIS;
+        int_marker.controls.push_back( control );
+
+        control.orientation.w = 1;
+        control.orientation.x = 0;
+        control.orientation.y = 1;
+        control.orientation.z = 0;
+        control.name = "rotate_z";
+        control.interaction_mode = InteractiveMarkerControl::ROTATE_AXIS;
+        int_marker.controls.push_back( control );
+        control.name = "move_z";
+        control.interaction_mode = InteractiveMarkerControl::MOVE_AXIS;
+        int_marker.controls.push_back( control );
+
+        control.orientation.w = 1;
+        control.orientation.x = 0;
+        control.orientation.y = 0;
+        control.orientation.z = 1;
+        control.name = "rotate_y";
+        control.interaction_mode = InteractiveMarkerControl::ROTATE_AXIS;
+        int_marker.controls.push_back( control );
+        control.name = "move_y";
+        control.interaction_mode = InteractiveMarkerControl::MOVE_AXIS;
+        int_marker.controls.push_back( control );
+    }
+
+    server->insert( int_marker );
+    server->setCallback( int_marker.name, &processFeedback );
+
+    if( interaction_mode != visualization_msgs::InteractiveMarkerControl::NONE )
+    {
+        menu_handler.apply( *server, int_marker.name );
+    }
+}
+
 int main( int argc, char** argv )
 {
     ros::init( argc, argv, "basic_controls" );
@@ -159,11 +251,16 @@ int main( int argc, char** argv )
 
     ros::Duration(0.1).sleep();
     
-    // sung work on the menu handler later.
-    //menu_handler.insert( "First Entry", &processFeedback );
+    menu_handler.insert( "First Entry", &processFeedback );
+    menu_handler.insert( "Second Entry", &processFeedback );
+    interactive_markers::MenuHandler::EntryHandle sub_menu_handle = menu_handler.insert( "Submenu" );
+    menu_handler.insert( sub_menu_handle, "First sub entry", &processFeedback );
+    menu_handler.insert( sub_menu_handle, "Second sub entry", &processFeedback );
 
     tf::Vector3 position;
-    position = tf::Vector3( 0, 0, 0 );
+    position = tf::Vector3( -3, 3, 0 );
+    make6DofMarker( false, visualization_msgs::InteractiveMarkerControl::NONE, position, true );
+    position = tf::Vector3( -3, 0, 0 );
     makeButtonMarker( position );
 
     server->applyChanges();
