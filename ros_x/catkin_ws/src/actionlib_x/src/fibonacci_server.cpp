@@ -2,6 +2,15 @@
 #include <actionlib/server/simple_action_server.h>
 #include <actionlib_x/FibonacciAction.h>
 
+// What could be problem?
+// Symptom: The rostopic for the fibonacci is not being published. Also the 
+// server node doesn't seem to be starting.
+// 1. The server code does not publish the correct content.
+// 2. There is an algoritm hang.
+// 3. The binding is not good.
+// 4. Node setup is not correct.
+
+
 class FibonacciAction
 {
     public:
@@ -12,6 +21,7 @@ class FibonacciAction
                  false ),
             action_name_( name )
         {
+            as_.start();
         }
 
         ~FibonacciAction()
@@ -72,6 +82,7 @@ class FibonacciAction
 
 int main( int argc, char** argv )
 {
+    ROS_INFO( "hello actionlib" );
     ros::init( argc, argv, "fibonacci" );
     FibonacciAction fibonacci("fibonacci");
     ros::spin();
