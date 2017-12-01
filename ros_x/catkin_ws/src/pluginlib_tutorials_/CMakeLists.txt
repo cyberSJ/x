@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(actionlib_x)
+project(pluginlib_tutorials_)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
 # add_compile_options(-std=c++11)
@@ -8,12 +8,8 @@ project(actionlib_x)
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
-  actionlib
-  actionlib_msgs
-  message_generation
+  pluginlib
   roscpp
-  rospy
-  std_msgs
 )
 
 ## System dependencies are found with CMake's conventions
@@ -69,19 +65,12 @@ find_package(catkin REQUIRED COMPONENTS
 #   Action1.action
 #   Action2.action
 # )
-add_action_files( DIRECTORY action
-                  FILES Fibonacci.action
-                        Averaging.action )
 
 ## Generate added messages and services with any dependencies listed here
 # generate_messages(
 #   DEPENDENCIES
-#   actionlib_msgs#   std_msgs
+#   std_msgs  # Or other packages containing msgs
 # )
-generate_messages(
-    DEPENDENCIES
-        actionlib_msgs
-        std_msgs )
 
 ################################################
 ## Declare ROS dynamic reconfigure parameters ##
@@ -114,12 +103,10 @@ generate_messages(
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
 #  INCLUDE_DIRS include
-#  LIBRARIES actionlib_x
-#  CATKIN_DEPENDS actionlib actionlib_msgs message_generation roscpp rospy std_msgs
+#  LIBRARIES pluginlib_tutorials_
+#  CATKIN_DEPENDS pluginlib roscpp
 #  DEPENDS system_lib
 )
-catkin_package(
-    CATKIN_DEPENDS actionlib_msgs )
 
 ###########
 ## Build ##
@@ -128,14 +115,15 @@ catkin_package(
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
 include_directories(
-# include
+ include
   ${catkin_INCLUDE_DIRS}
 )
 
 ## Declare a C++ library
 # add_library(${PROJECT_NAME}
-#   src/${PROJECT_NAME}/actionlib_x.cpp
+#   src/${PROJECT_NAME}/pluginlib_tutorials_.cpp
 # )
+add_library(polygon_plugins src/polygon_plugins.cpp)
 
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries
@@ -145,11 +133,8 @@ include_directories(
 ## Declare a C++ executable
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
-# add_executable(${PROJECT_NAME}_node src/actionlib_x_node.cpp)
-add_executable(${PROJECT_NAME}_fibonacci_server src/fibonacci_server.cpp)
-add_executable(${PROJECT_NAME}_fibonacci_client src/fibonacci_client.cpp)
-add_executable(${PROJECT_NAME}_averaging_server src/averaging_server.cpp)
-add_executable(${PROJECT_NAME}_averaging_client src/averaging_client.cpp)
+# add_executable(${PROJECT_NAME}_node src/pluginlib_tutorials__node.cpp)
+add_executable(polygon_loader src/polygon_loader.cpp)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -160,28 +145,12 @@ add_executable(${PROJECT_NAME}_averaging_client src/averaging_client.cpp)
 ## Add cmake target dependencies of the executable
 ## same as for the library above
 # add_dependencies(${PROJECT_NAME}_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
-# sung Without these dependencies, the header file is not generated before the
-# target is compiled.
-add_dependencies(${PROJECT_NAME}_fibonacci_server
-                 ${actionlib_x_EXPORTED_TARGETS})
-add_dependencies(${PROJECT_NAME}_fibonacci_client
-                 ${actionlib_x_EXPORTED_TARGETS})
-add_dependencies(${PROJECT_NAME}_averaging_server
-                 ${actionlib_x_EXPORTED_TARGETS})
-add_dependencies(${PROJECT_NAME}_averaging_client
-                 ${actionlib_x_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
 # target_link_libraries(${PROJECT_NAME}_node
 #   ${catkin_LIBRARIES}
 # )
-target_link_libraries(${PROJECT_NAME}_fibonacci_server
-                      ${catkin_LIBRARIES})
-target_link_libraries(${PROJECT_NAME}_fibonacci_client
-                      ${catkin_LIBRARIES})
-target_link_libraries(${PROJECT_NAME}_averaging_server
-                      ${catkin_LIBRARIES})
-target_link_libraries(${PROJECT_NAME}_averaging_client
+target_link_libraries(polygon_loader
                       ${catkin_LIBRARIES})
 
 #############
@@ -224,7 +193,7 @@ target_link_libraries(${PROJECT_NAME}_averaging_client
 #############
 
 ## Add gtest based cpp test target and link libraries
-# catkin_add_gtest(${PROJECT_NAME}-test test/test_actionlib_x.cpp)
+# catkin_add_gtest(${PROJECT_NAME}-test test/test_pluginlib_tutorials_.cpp)
 # if(TARGET ${PROJECT_NAME}-test)
 #   target_link_libraries(${PROJECT_NAME}-test ${PROJECT_NAME})
 # endif()
