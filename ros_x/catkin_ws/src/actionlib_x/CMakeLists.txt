@@ -70,7 +70,8 @@ find_package(catkin REQUIRED COMPONENTS
 #   Action2.action
 # )
 add_action_files( DIRECTORY action
-                  FILES Fibonacci.action )
+                  FILES Fibonacci.action
+                        Averaging.action )
 
 ## Generate added messages and services with any dependencies listed here
 # generate_messages(
@@ -147,6 +148,8 @@ include_directories(
 # add_executable(${PROJECT_NAME}_node src/actionlib_x_node.cpp)
 add_executable(${PROJECT_NAME}_fibonacci_server src/fibonacci_server.cpp)
 add_executable(${PROJECT_NAME}_fibonacci_client src/fibonacci_client.cpp)
+add_executable(${PROJECT_NAME}_averaging_server src/averaging_server.cpp)
+add_executable(${PROJECT_NAME}_averaging_client src/averaging_client.cpp)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -169,6 +172,10 @@ add_dependencies(${PROJECT_NAME}_fibonacci_client
 target_link_libraries(${PROJECT_NAME}_fibonacci_server
                       ${catkin_LIBRARIES})
 target_link_libraries(${PROJECT_NAME}_fibonacci_client
+                      ${catkin_LIBRARIES})
+target_link_libraries(${PROJECT_NAME}_averaging_server
+                      ${catkin_LIBRARIES})
+target_link_libraries(${PROJECT_NAME}_averaging_client
                       ${catkin_LIBRARIES})
 
 #############
