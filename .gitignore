@@ -9,3 +9,6 @@ devel/
 
 # vim temp file
 *.swp
+
+# Java class files
+*.class
