@@ -3,3 +3,9 @@ install/
 
 # Vim temp files
 *.swp
+
+# Java .class files
+*.class
+
+# Generated shared libraries.
+*.so
