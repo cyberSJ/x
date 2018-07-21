@@ -8,7 +8,6 @@ if [[ ! -d ${build_dir}]]; then
     mkdir ${build_dir}
 fi
 
-# TODO: Do the C++ compilation in a makefile.
 # Set the Java home needed to reference the JNI capability. The jni.h file is
 # located under this directory tree. The file is needed to compile code that
 # uses JNI.
@@ -39,7 +38,6 @@ jfftw_c_sources="${jfftw_c_source_dir}/jfftw_Wisdom.c \
 # 2. The linux JNI header provided from Java.
 # 3. The FFTW headers for C.
 # 4. The JFFTW headers for C.
-# TODO: somehow, these expansion does not work well in the gcc command below.
 include_dirs="-I\"${java_home}/include\" \
               -I\"${java_home}/include/linux\" \
               -I\"${fftw_include_dir}\" \
@@ -48,12 +46,6 @@ include_dirs="-I\"${java_home}/include\" \
 # This library name is assumed by the JFFTW Java code to load during compile and
 # run time. This will be the name of the generated shared library.
 jfftw_library_name="libjfftw.so"
-
-# TODO: /usr/bin/x86_64-linux-gnu-ld:
-# /usr/local/lib/fftw/fftw-2.1.5/lib/libfftw.a(planner.o): relocation
-# R_X86_64_PC32 against symbol `fftw_config' can not be used when making a
-# shared object; recompile with -fPIC
-# This means I need to recompile FFTW with -fPIC.
 
 # Create the shared library for the JNI C++ implementation that bridges the
 # JFFTW (java) with the FFTW (C++). This library will be used by the JFFTW Java
