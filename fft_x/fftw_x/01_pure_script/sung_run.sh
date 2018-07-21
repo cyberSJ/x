@@ -3,7 +3,7 @@
 # Specify the directory that will contain the built artifacts
 build_dir="./build"
 
-if [[ ! -d ${build_dir}]]; then
+if [[ ! -d ${build_dir} ]]; then
     echo creating ${build_dir}
     mkdir ${build_dir}
 fi
