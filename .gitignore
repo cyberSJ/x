@@ -3,3 +3,8 @@ install/
 
 # Vim temp files
 *.swp
+
+# Gradle temp files
+.gradle/
+gradle/
+gradlew*

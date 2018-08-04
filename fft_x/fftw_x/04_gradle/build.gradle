@@ -1,0 +1,24 @@
+// Bring in the C++-related build tasks such as assemble, build, clean, to
+// Gradle.
+apply plugin: 'cpp'
+
+// Build the libjfftw.so shared library.
+// model is a Gradle keyword for a model for building a native (C++) code.
+// components: A component can be thought as "target" in makefile.
+// jfftw: This is an arbitrary name for the shared library. Gradle, by default,
+//     assumes that the source code for this library is in src/jfftw/cpp
+//     directory.
+model {
+    components {
+        jfftw(NativeLibrarySpec) {
+            sources {
+                cpp {
+                    source {
+                        // Exclude the vim temp files.
+                        exclude "*.swp"
+                    }
+                }
+            }
+        }
+    }
+}
