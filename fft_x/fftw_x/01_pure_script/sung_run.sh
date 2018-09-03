@@ -52,7 +52,7 @@ jfftw_library_name="libjfftw.so"
 # code. No need to loadLibrary() from my code since the JFFTW Java code already
 # does that.
 # The `eval echo ${include_dirs}` is needed becuase ${include_dirs} itself
-# contains another ${} things to expand. eval does the expandsion.
+# contains another ${} things to expand. eval does the expansion.
 # the "-Wl,--whole-archive ..." line is for linking a static library to the
 # soon-to-be-generated dynamic library. This is needed because the Java code
 # only has JNI API for the JFFTW shared library, but the library needs to

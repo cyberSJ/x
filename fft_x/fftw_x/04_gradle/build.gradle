@@ -1,24 +1,178 @@
-// Bring in the C++-related build tasks such as assemble, build, clean, to
-// Gradle.
-apply plugin: 'cpp'
+// Bring in the C-related build tasks such as assemble, build, clean, to
+// Gradle. Do not bring in C++ plugin because the JFFTW C code is in pure C.
+apply plugin: 'c'
+
+// Bring in the java plugin
+apply plugin: 'java'
+
+// Creating my custom managed object for fun.
+@Managed
+interface Item
+{
+}
 
 // Build the libjfftw.so shared library.
 // model is a Gradle keyword for a model for building a native (C++) code.
-// components: A component can be thought as "target" in makefile.
+// components: A component can be thought as "target" in makefile. Not really.
 // jfftw: This is an arbitrary name for the shared library. Gradle, by default,
 //     assumes that the source code for this library is in src/jfftw/cpp
-//     directory.
-model {
-    components {
-        jfftw(NativeLibrarySpec) {
-            sources {
-                cpp {
-                    source {
+//     directory. Arbitary name with the interface/class inside the following
+//     parenthesis is a Gradle's way of "creation rule".
+model
+{
+    // The gradle documents that you can have a components closure.
+    components
+    {
+        // This is one of the "creatione rule" syntax.
+        jfftw(NativeLibrarySpec)
+        {
+            // Having "binaries" here is fine because "gradle model" command
+            // output lists it.
+            binaries
+            {
+                // This is also listed. Having this just for fun/test.
+                // To see what can go insdie the sharedLibrary closure:
+                //     1.
+                sharedLibrary
+                {
+                    // Source sets can be specified directly inside the
+                    // shared library or static library umbrella.
+                    sources
+                    {
+                    }
+
+                    // You can define linker argument to individual
+                    // NativeLibrarySpec. Take a look at the
+                    // SharedLibraryBinarySpec DSL doc.
+                    // This line was originally added because I thought it will
+                    // fill out the undefined functions in libjfftw.so, but it
+                    // didn't do it. From looking at previous version of gradle
+                    // exercis, libjfftw.so doesn't need to have the sin, cost,
+                    // malloc, etc functions defined in the libjfftw.so. The
+                    // final program works even without the functions defined. I
+                    // don't know why it works, but it works.
+                    //linker.args "-lm"
+                }
+            }
+
+            // Or sources can be specified for all binary types.
+            sources
+            {
+                // Since I'm compiling C code (and not C++) JFFTW, I need "c"
+                // for the gradle and not "cpp" plugin.
+                c 
+                {
+                    source
+                    {
                         // Exclude the vim temp files.
                         exclude "*.swp"
+
+                        // Assumes the JFFTW C++ code is living at this
+                        // location.
+                        srcDirs "/home/cyber/sandbag/jfftw-1.2/c"
+                        include "**/*.c"
+
+                        // Link the libfftw.a and librfftw.a to this shared
+                        // library.
+                        lib library: "fftwLib"
+                        lib library: "rfftwLib"
                     }
+                }
+            }
+
+            // You can access the properties of NativeLibrarySpec (or any
+            // Gradle object) using the dollar sign. You can view the
+            // dollarred-value when the gradle task for jfftw is actually
+            // requested to run by human or machine.
+            println "The baseName is: $baseName"
+
+            // You can call the (inherited) function just like a Java function.
+            println "The baseName is: " + getName()
+        }
+    }
+
+    // We need to link the FFTW C library (libfftw.a and librfftw.a) to the
+    // jfftw shared library because when we use the jfftw shared library, we
+    // also need the definitions to the functions that are defined in libfftw.a
+    // and librfftw.a.
+    repositories
+    {
+        myLibs(PrebuiltLibraries)
+        {
+            fftwLib
+            {
+                headers.srcDir "/usr/local/include"
+                binaries.withType(SharedLibraryBinary)
+                {
+                    sharedLibraryFile = file("/usr/local/lib/libfftw.a")
+                }
+            }
+
+            rfftwLib
+            {
+                headers.srcDir "/usr/local/include"
+                binaries.withType(SharedLibraryBinary)
+                {
+                    sharedLibraryFile = file("/usr/local/lib/librfftw.a")
                 }
             }
         }
     }
 }
+
+// Gradle generates a task called jfftwSharedLibrary, which is ultimately a
+// CCompile task type. Since we need the jni.h and jni_md.h in order compile
+// JFFTW C code, we need paths to the .h files. We can declare the include
+// directories for the .h files with this closure.
+tasks.withType(CCompile)
+{
+    // Include the fftw header. If the header is in the system include
+    // directory, then it is optional to include since the gcc can find it, but
+    // I'm just including it here for demonstration purposes.
+    includes "/usr/local/include"
+
+    // Find and link the FFTW c library when compiling JFFTW C code.
+    //compilerArgs ['-L /usr/local/lib']
+
+    // somehow include the JNI header.
+    includes "/usr/lib/jvm/default-java/include/" 
+    includes "/usr/lib/jvm/default-java/include/linux"
+
+    //println "The system include dir: $systemIncludes" 
+
+    //compilerArgs = ['-lm', '-lc']
+}
+
+// Assuming above lines produce libjfftw.so, we will now build a custom java
+// program that utilizes JFFTW java code (which in turn uses FFTW C code) that
+// performs FFT.
+
+// My custom java program needs JFFTW java code during compile time.
+sourceSets
+{
+    main
+    {
+        java
+        {
+            srcDirs "src/main/java",
+                    "/home/cyber/sandbag/jfftw-1.2/java/jfftw"
+        }
+    }
+}
+
+// We need to run the java code. Specify the class containing the main function.
+jar
+{
+    manifest 
+    {
+        attributes "Main-Class": "HelloJfftw"
+    }
+}
+
+// Then create a Gradle task "run" which can run the main class with the 
+// libjfftw.so linked. This achieves  the same thing as done with the following
+// linux command:
+//     java -Djava.library.path=<path> -jar <generated project jar>
+apply plugin: "application"
+mainClassName = "HelloJfftw"
+applicationDefaultJvmArgs = ["-Djava.library.path=build/libs/jfftw/shared"]

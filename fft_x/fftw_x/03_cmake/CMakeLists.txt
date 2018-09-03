@@ -32,7 +32,7 @@ set(jfftw_lib_name jfftw)
 add_library(${jfftw_lib_name} SHARED ${jfftw_c_sources})
 
 # Link the static JFFTW library to libjfftw.so. Somehow this links the static
-# library to the dynamic library without my manual addtion of
+# library to the dynamic library without my manual addition of
 # "-Wl,--whole-archive" link flag:
 #set_target_properties(${jfftw_lib_name} 
 #                       PROPERTIES LINK_FLAGS "-Wl,--whole-archive")
