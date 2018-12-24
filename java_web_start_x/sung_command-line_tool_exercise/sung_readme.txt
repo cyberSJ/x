@@ -12,8 +12,11 @@ gradle.
 
 4. To view the content of the manifest of the jar
     unzip -p sung.jar META-INF/MANIFEST.MF
+    
+5. To sign the jar (required when using JWS),
+    jarsigner -keystore /home/cyber/keystore_cyber -tsa http://sha256timestamp.ws.symantec.com/sha256/timestamp -signedjar sung_signed.jar sung.jar cyber
 
-5. To launch the app using the link from a web browser,
+6. To launch the app using the link from a web browser,
     1. google-chrome appPage.html.
     2. Click the link.
     3. Save the jnlp file to this directory.
