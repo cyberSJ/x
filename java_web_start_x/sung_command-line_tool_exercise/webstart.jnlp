@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jnlp 
+    spec="1.0+"
+    href="webstart.jnlp">
+    <information>
+        <title>SungApp</title>
+        <vendor>A personal project</vendor>
+        <description>My first JWS app</description>
+    </information>
+    <resources>
+        <j2se version="1.8+"/>
+        <jar 
+            href="sung_signed.jar"
+            main="true"/>
+    </resources>
+    <application-desc 
+        name="Sung App"
+        main-class="com.cybersj.jws.MyTopJPanel"
+        width="300"
+        height="300">
+    </application-desc>
+</jnlp>

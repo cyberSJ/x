@@ -1,0 +1,5 @@
+Main-Class: com.cybersj.jws.MyTopJPanel
+Name: com.cybersj.jws
+Sealed: true
+Permission: sandbox
+Application-Name: My Top JPanel
