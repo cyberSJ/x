@@ -1,7 +1,8 @@
 // Apply the java-library plugin to add support for Java Library
 apply plugin: 'java-library'
+
+// Added this because Java Web Start is not supported by Java 11.
 sourceCompatibility = 1.8
-targetCompatibility = 1.8 
 
 // Apply the plugin needed for signing using GnuPG. But this is not so relevant
 // to actual jar signing I want.
