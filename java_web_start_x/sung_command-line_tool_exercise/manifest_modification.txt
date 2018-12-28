@@ -1,5 +1,6 @@
 Main-Class: com.cybersj.jws.MyTopJPanel
 Name: com.cybersj.jws
 Sealed: true
+Codebase: 192.168.1.13
 Permissions: sandbox
 Application-Name: My Top JPanel
