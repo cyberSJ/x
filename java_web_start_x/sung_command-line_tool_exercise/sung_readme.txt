@@ -40,3 +40,12 @@ gradle.
     8. Open a web browser (in a remote machine) and navigate to
         http://<ip of server>
     9. Click the link the browser to launch the app.
+
+    The picture of the file location looks like this:
+    /etc/apache2/sites-available/
+    `-- sungexample.com.conf
+
+    /var/www/sungexample.com/html
+    `-- index.html
+    `-- webstart.jnlp
+    `-- sung_singed.jar
