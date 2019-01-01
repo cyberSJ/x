@@ -1,0 +1,5 @@
+// Needed in order for the build.gradle to recogznie "projectA" and "projectB".
+// If these are not here, the gradle build command fails due to "projectA" or
+// "projectB" not being found.
+include "projectA"
+include "projectB"

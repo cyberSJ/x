@@ -1,0 +1,90 @@
+// Why does this syntax work?:
+// https://docs.gradle.org/current/dsl/org.gradle.api.Task.html
+// https://docs.gradle.org/current/javadoc/org/gradle/api/Project.html#task-java.lang.String-groovy.lang.Closure-
+//     task <arbitrary task label> {}
+// - task is a function (with the optional parenthesis missing)
+// - The task() takes 2 arguments. String and closure.
+task hello {
+    doLast
+    {
+        println "Task hello"
+    }
+}
+
+// Another way to create a task (not used often) is to call the 
+// TaskContainer.create() function. The TaskContainer lives in a Project as a
+// variable named tasks. This can be figured out by looking at the function
+// Project.getTask() which, in gradle-convention, means there is a variable
+// called tasks in the Project instance.
+project.tasks.create("TaskTwo")
+
+// Tasks already defined can be refered by their name directly without the
+// explicit project scope.
+// https://docs.gradle.org/current/userguide/tutorial_using_tasks.html#sec:shortcut_notations
+TaskTwo.doLast
+{
+    println "Task Two~"
+}
+
+// The input variable can be intercepted using arbitrary word before the "->".
+4.times { someInputVar ->
+    task "task$someInputVar" {
+        doLast {
+            println "I'm task number $someInputVar"
+        }
+    }
+}
+
+
+// Exercising creating a custom Task class.
+import javax.inject.Inject;
+
+class CustomTask extends DefaultTask
+{
+    final String message;
+    final int number;
+
+    @Inject
+    CustomTask(String message, int number)
+    {
+        this.message = message;
+        this.number = number;
+    }
+}
+
+// For create()ing a custom class, there is no API that accepts constructor
+// and closure, so I have create() first and then invoke the task name to queue
+// a behavior for the task.
+tasks.create('myTask', CustomTask, 'some message', 4) 
+
+myTask
+{
+    doLast
+    {
+        println "The message is $message. The number is $number"
+    }
+}
+
+// Refering a task from a different project. Need settings.gradle file in the
+// current directory. The settings.gradle file needs to include the projects I'm
+// mentioning here.
+project("projectA")
+{
+    task taskX {
+        dependsOn ":projectB:taskY"
+        doLast
+        {
+            println "task X"
+        }
+    }
+}
+
+project("projectB")
+{
+    task taskY {
+        doLast
+        {
+            println "task Y"
+        }
+    }
+}
