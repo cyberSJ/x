@@ -1,0 +1,79 @@
+
+buildscript {
+    repositories {
+        maven {
+            url = uri(repoLocation)
+        }
+    }
+    dependencies {
+        classpath 'org.gradle:customPlugin:1.0-SNAPSHOT'
+    }
+}
+
+// Let the build.gradle know the default location of the groovy files I'm going
+// to create. The groopy plugin ships the default locations to this gradle 
+// build.
+// Declaring to add the groovy plugin also provides the Java plugin,
+// which in turn provides "implementation" configuration that can be used in
+// the dependencies{} script block. Groovy plugin extends the Java plugin.
+plugins {
+    id 'groovy'
+}
+
+// The groovy plugin needs explicit declaration of groovy dependency (although
+// gradle ships with the library, declaration of dependency is different than
+// having the library).
+// We can manually type the version of the groovy ourselves like:
+//      'org.codehaus.groovy:groovy-all:2.4.15'
+// OR
+// we can use the current version of groovy used by gradle. To do this the
+// dependencies script block can help. The version of groovy needs to be
+// specified for the "implementation" configuration because we are WRITING
+// groovy language for this build.
+dependencies {
+    // Tell build.gradle that we want current VERSION of groovy to be used when
+    // implementing (writing) our source code. The localGroovy() function is in
+    // the DependencyHandler doc.
+    // We don't use "compile" configuration because it is superceded by the
+    // "implementation" configuration.
+    // What happens if I don't declare the dependency for local groovy?
+    implementation localGroovy()
+
+    // Tell build.gradle that we are going to use gradle API. This is
+    // different than specifing the version of the groovy because we are talking
+    // about gradle here (not groovy).
+    // What happens if I don't declare the dependency for gradle api?
+    //  1. We can't import org.gradle.api.* in our groovy code.
+    implementation gradleApi()
+}
+
+// Up to here, we can build a .groovy code.
+
+
+// The gradle documentation does not provide working example for below. Giving
+// up for now....
+
+// In order to use the GreetingTask.class in this build script, we need add the
+// class file to the classpath of the build script. The buildScript{} script
+// block can helps us with that.
+//buildscript {
+//    // Now we are in ScriptHandler delegate. 
+//
+//    // Maybe we can declare dependency on the built .class file like this?
+//    dependencies{
+//        implementation 'org.gradle.GreetingTask:GreetingTask:1.0'
+//    }
+//
+//    repositories {
+//        // Now are in RepositoryHandler.
+//
+//        // Why do we need this? Gradle already comes with groovy libraries.. so
+//        // why do we need to declare repository dependency like we are bringing
+//        // some other libraries through the internet?
+//    }
+//}
+
+
+//task greetingTask(Type: org.gradle.GreetingTask) {
+//    greeting = "custom greeting"
+//}
