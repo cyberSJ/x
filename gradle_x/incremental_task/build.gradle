@@ -1,0 +1,78 @@
+class IncrementalReverseTask extends DefaultTask {
+    // What if I don't put "def"? It still works.
+    @InputDirectory
+    def File inputDir
+
+    @OutputDirectory
+    def File outputDir
+
+    // The reason for having this property is to test and see that a change in a
+    // task property results in all inputs to be considered out of date, causing
+    // all the outputs to be regenerated. Commented this out since I'm currently
+    // not interested in testing this feature.
+    // Why does this not have a type? Gradle allows for non-static type 
+    // variable.
+    // It still works when I do not put "def" even for the type-less variable.
+    //@Input
+    //def inputProperty
+
+
+    @TaskAction
+    void execute(IncrementalTaskInputs inputs) {
+        println inputs.incremental ? 
+            "Only changed inputs are considered out of date." :
+            "All inputs are considered out of date.";
+
+        if (!inputs.incremental) {
+            // For some reason, project.delete() function can take File[] (in
+            // addtion to just File). Weird...
+            // If I just pass in the outputDir, will it erase the directory
+            // itself? Yes. So listFiles() mean only erase the contents of the
+            // directory but not the directory itself.
+            project.delete(outputDir.listFiles())
+        }
+
+        // The closure passed to the outOfDate() is executed only when the input
+        // to the task is changed (but not when it is removed).
+        // The "change" input variable is of type InputFileDetails I think.
+        inputs.outOfDate { change ->
+            if (change.file.directory) {
+                return;
+            }
+
+            // Gets a reference to a file in the output dir. If the file already
+            // exists, this only gets the reference to the existing file. If the
+            // file is NOT already created, the File() function creates the file
+            // and then returns the reference to this file.
+            def newFile = new File(outputDir, change.file.name);
+
+            // It reverses the order of the text char-by-char, and put the
+            // reversed content to the output file.
+            newFile.text = change.file.text.reverse();
+        };
+
+        inputs.removed { removedThing ->
+            if (removedThing.file.directory) {
+                return;
+            }
+
+            // Gets a reference to the file, which should already exist.
+            def targetFile = new File(outputDir, removedThing.file.name);
+
+            // Delete the file.
+            project.delete(targetFile);
+            // or use targetFile.delete();
+        };
+    }
+}
+
+task myTask(type: IncrementalReverseTask) {
+    inputDir = file('input');
+    outputDir = file('output');
+
+    // Not sure why I need such property defined.
+    // Also, the script does not compile when there is a space between "?" and 
+    // ":"....why?
+    //inputProperty = project.properties['taskInputProperty'] ?: 'original'
+    //inputProperty = 'hey';
+}
