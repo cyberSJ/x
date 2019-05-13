@@ -1,0 +1,229 @@
+Starting a Gradle Daemon (subsequent builds will be faster)
+
+> Task :model
+
+------------------------------------------------------------
+Root project
+------------------------------------------------------------
+
++ binaries
+      | Type:   	org.gradle.platform.base.BinaryContainer
+      | Creator: 	BinaryBasePlugin.Rules#binaries(BinaryContainer)
+      | Rules:
+         ⤷ NativeComponentModelPlugin.Rules#createBuildDependentBinariesTasks(ModelMap<Task>, NativeBinarySpecInternal)
+         ⤷ NativeComponentModelPlugin.Rules#executableTasks(ModelMap<Task>, NativeExecutableBinarySpecInternal)
+         ⤷ NativeComponentModelPlugin.Rules#sharedLibraryTasks(ModelMap<Task>, SharedLibraryBinarySpecInternal)
+         ⤷ NativeComponentModelPlugin.Rules#staticLibraryTasks(ModelMap<Task>, StaticLibraryBinarySpecInternal)
+         ⤷ ComponentModelBasePlugin.PluginRules#collectBinaries(BinaryContainer, ComponentSpecContainer)
++ buildTypes
+      | Type:   	org.gradle.nativeplatform.BuildTypeContainer
+      | Value:  	BuildType container
+      | Creator: 	NativeComponentModelPlugin.Rules#buildTypes(ExtensionContainer)
+      | Rules:
+         ⤷ NativeComponentModelPlugin.Rules#createDefaultBuildTypes(BuildTypeContainer)
++ components
+      | Type:   	org.gradle.platform.base.ComponentSpecContainer
+      | Creator: 	ComponentBasePlugin.PluginRules#components(ComponentSpecContainer)
++ flavors
+      | Type:   	org.gradle.nativeplatform.FlavorContainer
+      | Value:  	Flavor container
+      | Creator: 	NativeComponentModelPlugin.Rules#flavors(ExtensionContainer)
+      | Rules:
+         ⤷ NativeComponentModelPlugin.Rules#createDefaultFlavor(FlavorContainer)
++ platforms
+      | Type:   	org.gradle.platform.base.PlatformContainer
+      | Value:  	Platform container
+      | Creator: 	ComponentModelBasePlugin.PluginRules#platforms(Instantiator)
+      | Rules:
+         ⤷ NativeComponentModelPlugin.Rules#registerFactoryForCustomNativePlatforms(PlatformContainer, Instantiator)
++ projectLayout
+      | Type:   	org.gradle.language.base.internal.ProjectLayout
+      | Creator: 	ComponentModelBasePlugin.PluginRules#projectLayout(ProjectIdentifier, File)
++ repositories
+      | Type:   	org.gradle.nativeplatform.Repositories
+      | Value:  	ArtifactRepository container
+      | Creator: 	NativeComponentModelPlugin.Rules#repositories(ServiceRegistry, FlavorContainer, PlatformContainer, BuildTypeContainer)
++ sources
+      | Type:   	org.gradle.language.base.ProjectSourceSet
+      | Value:  	[]
+      | Creator: 	LanguageBasePlugin.Rules#sources(Instantiator)
++ tasks
+      | Type:   	org.gradle.model.ModelMap<org.gradle.api.Task>
+      | Creator: 	Project.<init>.tasks()
+      | Rules:
+         ⤷ NativeComponentModelPlugin.Rules#createBuildDependentComponentsTasks(ModelMap<Task>, ComponentSpecContainer, BinaryContainer)
+         ⤷ NativeComponentModelPlugin.Rules#createInstallTasks(ModelMap<Task>, BinaryContainer)
+         ⤷ BinaryBasePlugin.Rules#copyBinaryTasksToTaskContainer(TaskContainer, BinaryContainer)
+         ⤷ NativeComponentModelPlugin.Rules#configurePreCompiledHeaderCompileTasks(TaskContainer, BinaryContainer, LanguageTransformContainer, ServiceRegistry)
+         ⤷ NativeComponentModelPlugin.Rules#configurePrefixHeaderGenerationTasks(TaskContainer, ComponentSpecContainer)
+         ⤷ ComponentModelBasePlugin.PluginRules#createSourceTransformTasks(TaskContainer, ModelMap<BinarySpecInternal>, LanguageTransformContainer, ServiceRegistry)
+         ⤷ NativeComponentModelPlugin.Rules#wireBuildDependentTasks(ModelMap<Task>, BinaryContainer, DependentBinariesResolver, ServiceRegistry)
+    + assemble
+          | Type:   	org.gradle.api.DefaultTask
+          | Value:  	task ':assemble'
+          | Creator: 	Project.<init>.tasks.assemble()
+          | Rules:
+             ⤷ copyToTaskContainer
+             ⤷ ComponentModelBasePlugin.PluginRules#attachBinariesToAssembleLifecycle(Task, ComponentSpecContainer)
+    + assembleDebug
+          | Type:   	org.gradle.api.DefaultTask
+          | Value:  	task ':assembleDebug'
+          | Creator: 	Project.<init>.tasks.assembleDebug()
+          | Rules:
+             ⤷ copyToTaskContainer
+    + assembleRelease
+          | Type:   	org.gradle.api.DefaultTask
+          | Value:  	task ':assembleRelease'
+          | Creator: 	Project.<init>.tasks.assembleRelease()
+          | Rules:
+             ⤷ copyToTaskContainer
+    + build
+          | Type:   	org.gradle.api.DefaultTask
+          | Value:  	task ':build'
+          | Creator: 	Project.<init>.tasks.build()
+          | Rules:
+             ⤷ copyToTaskContainer
+    + buildEnvironment
+          | Type:   	org.gradle.api.tasks.diagnostics.BuildEnvironmentReportTask
+          | Value:  	task ':buildEnvironment'
+          | Creator: 	Project.<init>.tasks.buildEnvironment()
+          | Rules:
+             ⤷ copyToTaskContainer
+    + check
+          | Type:   	org.gradle.api.DefaultTask
+          | Value:  	task ':check'
+          | Creator: 	Project.<init>.tasks.check()
+          | Rules:
+             ⤷ copyToTaskContainer
+    + clean
+          | Type:   	org.gradle.api.tasks.Delete
+          | Value:  	task ':clean'
+          | Creator: 	Project.<init>.tasks.clean()
+          | Rules:
+             ⤷ copyToTaskContainer
+    + compileDebugCpp
+          | Type:   	org.gradle.language.cpp.tasks.CppCompile
+          | Value:  	task ':compileDebugCpp'
+          | Creator: 	Project.<init>.tasks.compileDebugCpp()
+          | Rules:
+             ⤷ copyToTaskContainer
+    + compileReleaseCpp
+          | Type:   	org.gradle.language.cpp.tasks.CppCompile
+          | Value:  	task ':compileReleaseCpp'
+          | Creator: 	Project.<init>.tasks.compileReleaseCpp()
+          | Rules:
+             ⤷ copyToTaskContainer
+    + components
+          | Type:   	org.gradle.api.reporting.components.ComponentReport
+          | Value:  	task ':components'
+          | Creator: 	Project.<init>.tasks.components()
+          | Rules:
+             ⤷ copyToTaskContainer
+    + dependencies
+          | Type:   	org.gradle.api.tasks.diagnostics.DependencyReportTask
+          | Value:  	task ':dependencies'
+          | Creator: 	Project.<init>.tasks.dependencies()
+          | Rules:
+             ⤷ copyToTaskContainer
+    + dependencyInsight
+          | Type:   	org.gradle.api.tasks.diagnostics.DependencyInsightReportTask
+          | Value:  	task ':dependencyInsight'
+          | Creator: 	Project.<init>.tasks.dependencyInsight()
+          | Rules:
+             ⤷ copyToTaskContainer
+    + dependentComponents
+          | Type:   	org.gradle.api.reporting.dependents.DependentComponentsReport
+          | Value:  	task ':dependentComponents'
+          | Creator: 	Project.<init>.tasks.dependentComponents()
+          | Rules:
+             ⤷ copyToTaskContainer
+    + extractSymbolsRelease
+          | Type:   	org.gradle.nativeplatform.tasks.ExtractSymbols
+          | Value:  	task ':extractSymbolsRelease'
+          | Creator: 	Project.<init>.tasks.extractSymbolsRelease()
+          | Rules:
+             ⤷ copyToTaskContainer
+    + help
+          | Type:   	org.gradle.configuration.Help
+          | Value:  	task ':help'
+          | Creator: 	Project.<init>.tasks.help()
+          | Rules:
+             ⤷ copyToTaskContainer
+    + init
+          | Type:   	org.gradle.buildinit.tasks.InitBuild
+          | Value:  	task ':init'
+          | Creator: 	Project.<init>.tasks.init()
+          | Rules:
+             ⤷ copyToTaskContainer
+    + installDebug
+          | Type:   	org.gradle.nativeplatform.tasks.InstallExecutable
+          | Value:  	task ':installDebug'
+          | Creator: 	Project.<init>.tasks.installDebug()
+          | Rules:
+             ⤷ copyToTaskContainer
+    + installRelease
+          | Type:   	org.gradle.nativeplatform.tasks.InstallExecutable
+          | Value:  	task ':installRelease'
+          | Creator: 	Project.<init>.tasks.installRelease()
+          | Rules:
+             ⤷ copyToTaskContainer
+    + linkDebug
+          | Type:   	org.gradle.nativeplatform.tasks.LinkExecutable
+          | Value:  	task ':linkDebug'
+          | Creator: 	Project.<init>.tasks.linkDebug()
+          | Rules:
+             ⤷ copyToTaskContainer
+    + linkRelease
+          | Type:   	org.gradle.nativeplatform.tasks.LinkExecutable
+          | Value:  	task ':linkRelease'
+          | Creator: 	Project.<init>.tasks.linkRelease()
+          | Rules:
+             ⤷ copyToTaskContainer
+    + model
+          | Type:   	org.gradle.api.reporting.model.ModelReport
+          | Value:  	task ':model'
+          | Creator: 	Project.<init>.tasks.model()
+          | Rules:
+             ⤷ copyToTaskContainer
+    + projects
+          | Type:   	org.gradle.api.tasks.diagnostics.ProjectReportTask
+          | Value:  	task ':projects'
+          | Creator: 	Project.<init>.tasks.projects()
+          | Rules:
+             ⤷ copyToTaskContainer
+    + properties
+          | Type:   	org.gradle.api.tasks.diagnostics.PropertyReportTask
+          | Value:  	task ':properties'
+          | Creator: 	Project.<init>.tasks.properties()
+          | Rules:
+             ⤷ copyToTaskContainer
+    + stripSymbolsRelease
+          | Type:   	org.gradle.nativeplatform.tasks.StripSymbols
+          | Value:  	task ':stripSymbolsRelease'
+          | Creator: 	Project.<init>.tasks.stripSymbolsRelease()
+          | Rules:
+             ⤷ copyToTaskContainer
+    + tasks
+          | Type:   	org.gradle.api.tasks.diagnostics.TaskReportTask
+          | Value:  	task ':tasks'
+          | Creator: 	Project.<init>.tasks.tasks()
+          | Rules:
+             ⤷ copyToTaskContainer
+    + wrapper
+          | Type:   	org.gradle.api.tasks.wrapper.Wrapper
+          | Value:  	task ':wrapper'
+          | Creator: 	Project.<init>.tasks.wrapper()
+          | Rules:
+             ⤷ copyToTaskContainer
++ toolChains
+      | Type:   	org.gradle.nativeplatform.toolchain.internal.NativeToolChainRegistryInternal
+      | Value:  	NativeToolChain container
+      | Creator: 	NativeComponentModelPlugin.Rules#toolChains(ExtensionContainer)
+      | Rules:
+         ⤷ MicrosoftVisualCppCompilerPlugin.Rules#addToolChain(NativeToolChainRegistryInternal, ServiceRegistry)
+         ⤷ GccCompilerPlugin.Rules#addToolChain(NativeToolChainRegistryInternal, ServiceRegistry)
+         ⤷ ClangCompilerPlugin.Rules#addToolChain(NativeToolChainRegistryInternal, ServiceRegistry)
+         ⤷ NativeComponentModelPlugin.Rules#createDefaultToolChain(NativeToolChainRegistryInternal)
+
+BUILD SUCCESSFUL in 3s
+1 actionable task: 1 executed

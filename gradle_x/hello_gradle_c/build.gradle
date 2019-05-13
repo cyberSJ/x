@@ -1,0 +1,47 @@
+// Example from: 
+// https://github.com/gradle/native-samples/blob/master/c/application/build.gradle
+// This is a c application, not a c++ one.
+plugins {
+    id 'cpp-application'
+    id 'cpp-unit-test'
+}
+
+// The cpp-application introduces the "application" script block.
+// CppApplication
+application {
+    // BinaryCollection<CppBinary>::configureEach(Action)
+    // = CppBinary
+    binaries.configureEach {
+        // CppBinary::Provider<CompileTask>::get()
+        // = CppCompile
+        def cppCompile = compileTask.get()
+
+        // CppCompile::source::ConfigurableFileCollection::from()
+        // fileTree() is Project::fileTree(), which is a type of FileCollection,
+        // which can be used as an input for from().
+        // This basically tells gradle to find .c files from src/main/c
+        // directory.
+        cppCompile.source.from fileTree(dir: "src/main/c", include: "**/*.c")
+
+        // CppBinary::toolChain = NativeToolChain.
+        // NativeToolChain is inherited by GccCompatibleToolChain.
+        if (toolChain instanceof GccCompatibleToolChain) {
+            // CppCompile::compilerArgs = ListProperty<String>
+            // Use operator= to directly set the list of compiler options.
+            // -x c = Use C language.
+            cppCompile.compilerArgs = ["-x", "c", "-std=c11"]
+        }
+
+        // CppApplication::getBinaries() returns a BinaryCollction of something 
+        // that extends CppBinary. I think the final type of CppBinary is
+        // harded-coded inside CppApplication because 
+        // CppApplication::getDevelopmentBinary() returns a type of 
+        // CppExecutable, which is a type of CppBinary. CppExecutable has 
+        // getLinkTask().
+        def linkTask = linkTask.get()
+        if (toolChain instanceof GccCompatibleToolChain) {
+            linkTask.linkerArgs = ["-nodefaultlibs", "-lc", "sung"]
+        }
+
+    }
+}

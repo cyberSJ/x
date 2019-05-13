@@ -1,0 +1,10 @@
+// Unit testing example fetched from:
+// https://guides.gradle.org/building-cpp-libraries/
+plugins {
+    //id 'cpp-application'
+    id 'cpp-library'
+    id 'cpp-unit-test'
+}
+
+// To run the application, just execute it by calling it:
+// ./build/exe/main/debug/hello_gradle_cpp
