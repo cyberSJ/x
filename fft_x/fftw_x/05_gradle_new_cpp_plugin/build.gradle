@@ -1,0 +1,87 @@
+plugins {
+    // Import the c++ library for building libjfftw.so.
+    id 'cpp-library'
+
+    // Import the java library for building the java code that uses JFFTW.
+    id 'java'
+
+    // Import in order to run the java program. This plugin introduces the
+    // "gradle run" task.
+    id 'application'
+}
+
+/**
+ * @brief Path to the JFFTW c code. JFFTW java code needs shared library from c
+ * code.
+ */
+// TODO: Make this a local repo.
+def jfftwCDirPath = "/home/cyber/sandbag/jfftw-1.2/c"
+
+/**
+ * @brief Path to the FFTW C header files. JFFTW C code utilizes the FFTW C 
+ *        code.
+ */
+def fftwIncludeDirPath = "/usr/local/include"
+
+/**
+ * @brief Path to the FFTW static libraries.
+ */
+def fftwLibraryDirPath = "/usr/local/lib"
+
+/**
+ * @brief Path to the Java home. Used as a parent of the directory containing 
+ *        the JNI header files.
+ */
+def javaHomePath = "/usr/lib/jvm/default-java"
+
+/**
+ * @brief Path to the JNI header files.
+ */
+def jniHeaderDirPath = "${javaHomePath}/include"
+
+/**
+ * @brief Path to the JNI linux header files.
+ */
+def jniLinuxHeaderDirPath = "${jniHeaderDirPath}/linux"
+
+/**
+ * @brief The target name of the shared library produced by compiling the JFFTW
+ *        c code.
+ */
+def libJfftwSharedLibraryName = "jfftw"
+
+library {
+    binaries.configureEach {
+        // Tell gradle to find the path to the JFFTW c sources. We need to tell
+        // gradle that we want to use ANY FILE with .c extension under the 
+        // designated top directory umbrella.
+        // FileTree extends FileCollection.
+        def jfftwCSources = fileTree("${jfftwCDirPath}")
+        jfftwCSources.include "**/*.c"
+        def cppCompile = compileTask.get()
+        cppCompile.source.from jfftwCSources
+
+        // Since JFFTW c sources needs the jni.h headers, include those headers
+        // during the compilation of JFFTW c sources.
+        def jniHeadersDir = file("${jniHeaderDirPath}")
+        def jniLinuxHeaderDir = file("${jniLinuxHeaderDirPath}")
+        cppCompile.includes.from jniHeadersDir
+        cppCompile.includes.from jniLinuxHeaderDir
+
+        // Tell the c++ compiler that we are compiling c sources. But why do I
+        // have to do this? I thought GCC already understood c. Maybe the
+        // Gradle's wrapper around c++ compiler only understnad c++ and not c.
+        // TODO: I also saw that there is CCompiler in the gradle doc. Maybe use 
+        // that.
+        if (toolChain instanceof GccCompatibleToolChain) {
+            cppCompile.compilerArgs = ["-x", "c", 
+                                       "-std=c11"]
+        }
+    }
+
+    // Change the name of the generated shared library to "libjfftw.so" because 
+    // the JFFTW Java code is harde coded to reference such library.
+    baseName = libJfftwSharedLibraryName 
+}
+
+mainClassName = "JavaFft"
