@@ -11,11 +11,22 @@ plugins {
 }
 
 /**
+ * @brief Path to the JFFTW code package. It contains the c and java sources.
+ */
+// TODO: Make this a local repo.
+def jfftwDirPath = "/home/cyber/sandbag/jfftw-1.2"
+
+/**
  * @brief Path to the JFFTW c code. JFFTW java code needs shared library from c
  * code.
  */
-// TODO: Make this a local repo.
-def jfftwCDirPath = "/home/cyber/sandbag/jfftw-1.2/c"
+def jfftwCDirPath = "${jfftwDirPath}/c"
+
+/**
+ * @brief Path to the JFFTW c code. JFFTW java code needs shared library from c
+ * code.
+ */
+def jfftwJavaDirPath = "${jfftwDirPath}/java"
 
 /**
  * @brief Path to the FFTW C header files. JFFTW C code utilizes the FFTW C 
@@ -50,6 +61,8 @@ def jniLinuxHeaderDirPath = "${jniHeaderDirPath}/linux"
  */
 def libJfftwSharedLibraryName = "jfftw"
 
+def libjfftwLibraryPathUnoptimized = ""
+
 library {
     binaries.configureEach {
         // Tell gradle to find the path to the JFFTW c sources. We need to tell
@@ -77,6 +90,27 @@ library {
             cppCompile.compilerArgs = ["-x", "c", 
                                        "-std=c11"]
         }
+
+        // Link the fftw C library to the libjfftw.so. Without these, some of
+        // the functions in libjfftw.so are undefined.
+        def linkSharedLibrary = linkTask.get()
+        linkSharedLibrary.linkerArgs = 
+            ["${fftwLibraryDirPath}/libfftw.a",
+             "${fftwLibraryDirPath}/librfftw.a"]
+        System.out.println("sung linkSharedLibrary linkerArgs: " +
+                linkSharedLibrary.linkerArgs);
+
+        // When the program runs, let the JVM know where to find the 
+        // libjfftw.so. The libjfftw.so is the product of this C++ library.
+        // applicationDefaultJvmArgs comes from the java plugin (it is not a
+        // member variable in CppBinary).
+        def outputDirSpecifier = ""
+        outputs.forEach{
+            def outputDir = it.getParentFile()
+            outputDirSpecifier += File.pathSeparator + outputDir
+        }
+        applicationDefaultJvmArgs += ["-Djava.library.path=" +
+                                      outputDirSpecifier]
     }
 
     // Change the name of the generated shared library to "libjfftw.so" because 
@@ -84,4 +118,55 @@ library {
     baseName = libJfftwSharedLibraryName 
 }
 
+sourceSets {
+    // Declaring jfftw creates a jfftw SourceSet. Create this custom sourceSet
+    // in order to logically separate the third-party jfftw java code and my 
+    // code living under the src/main/java.
+    jfftw {
+        // SourceSet has an explicit method called "java("
+        java {
+            // Specify the source directory containing the JFFTW java sources.
+            // These java sources will be compiled and their class files will
+            // reside in the build directory so that my main sourceSet can use
+            // it.
+            srcDir "${jfftwJavaDirPath}"
+        }
+    }
+
+    // Tell main to depend on the jfftw sourceSet's output class.
+    main {
+        // Using sourceSet.output allows for the "incremental build" to happen.
+        // This means "main" sourceSet will automatically declare dependency on 
+        // the "jfftw" sourceSet, and "main" will be built AFTER "jfftw" is
+        // build.
+        def jfftwOutputDir = sourceSets.jfftw.output
+
+        // compileClasspath is a FileCollection. You can use += operator to
+        // append to the collection in addtion to the default src/main/java 
+        // path. This allows my custom java code to import the jfftw java code.
+        compileClasspath += jfftwOutputDir 
+    }
+}
+
+tasks.withType(JavaCompile) {
+    // JFFTW uses some deprecated java functions, and java wants to explicitly
+    // generate warnings about using depreceated functions. So this compilation 
+    // option is used to tell the java compiler that it can generate warnings 
+    // about it.
+    options.compilerArgs += "-Xlint:deprecation"
+}
+
+// Specify the java class that contains the main function.
 mainClassName = "JavaFft"
+
+// Add the jfftw output classpath to the main's classpath when running (as
+// opposed to compiling) the main code.
+dependencies {
+    runtimeOnly files(sourceSets.jfftw.output)
+}
+
+// When the program runs, let the JVM know where to find the libjfftw.so.
+//println ("sung lib path: " + library.developmentBinary.get().outputs.asList())
+//println "sung final libjfftwLibraryPathUnoptimized: " + libjfftwLibraryPathUnoptimized
+//applicationDefaultJvmArgs += ["-Djava.library.path=" +
+//                             libjfftwLibraryPathUnoptimized]

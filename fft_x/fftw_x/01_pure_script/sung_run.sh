@@ -57,7 +57,7 @@ jfftw_library_name="libjfftw.so"
 # soon-to-be-generated dynamic library. This is needed because the Java code
 # only has JNI API for the JFFTW shared library, but the library needs to
 # include the FFTW static library. Assumes that the FFTW was configured with the
-# -fPIC CFLAGS option as well since the statlic library is being attached to a
+# -fPIC CFLAGS option as well since the static library is being attached to a
 # shared library.
 gcc -fPIC `eval echo ${include_dirs}` \
     -L"${fftw_library_dir}" -lfftw -lrfftw\
