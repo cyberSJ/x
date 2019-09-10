@@ -1,3 +1,18 @@
+/**
+  * Things covered in this example:
+  * - Compiling a third party c or java source code.
+  * - Compiling a c source using CppCompile.
+  * - Including another party's header file.
+  * - Linking a third party's static library.
+  * - Using the output java .class files in another java code.
+  * - Getting a reference to a shared library build artifact.
+  * - Passing arguments to the java compiler.
+  * - Passing arguments to the JVM before run.
+  * - Passing the classpath to the JVM when a program is run.
+  * - building and running a jar.
+  * - JNI basic.
+  * - FFT basic.
+  */
 plugins {
     // Import the c++ library for building libjfftw.so.
     id 'cpp-library'
@@ -23,8 +38,7 @@ def jfftwDirPath = "/home/cyber/sandbag/jfftw-1.2"
 def jfftwCDirPath = "${jfftwDirPath}/c"
 
 /**
- * @brief Path to the JFFTW c code. JFFTW java code needs shared library from c
- * code.
+ * @brief Path to the JFFTW java  code.
  */
 def jfftwJavaDirPath = "${jfftwDirPath}/java"
 
@@ -69,6 +83,8 @@ library {
         // gradle that we want to use ANY FILE with .c extension under the 
         // designated top directory umbrella.
         // FileTree extends FileCollection.
+        // ** = Any directory.
+        // * = Any file name.
         def jfftwCSources = fileTree("${jfftwCDirPath}")
         jfftwCSources.include "**/*.c"
         def cppCompile = compileTask.get()
@@ -111,6 +127,8 @@ library {
         }
         applicationDefaultJvmArgs += ["-Djava.library.path=" +
                                       outputDirSpecifier]
+        
+        System.out.println("sung ________ : " + targetPlatform) 
     }
 
     // Change the name of the generated shared library to "libjfftw.so" because 
@@ -119,7 +137,7 @@ library {
 }
 
 sourceSets {
-    // Declaring jfftw creates a jfftw SourceSet. Create this custom sourceSet
+    // Declaring "jfftw" creates a jfftw SourceSet. Create this custom sourceSet
     // in order to logically separate the third-party jfftw java code and my 
     // code living under the src/main/java.
     jfftw {
