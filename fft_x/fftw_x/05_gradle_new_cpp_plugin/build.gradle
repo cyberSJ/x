@@ -113,7 +113,7 @@ library {
         linkSharedLibrary.linkerArgs = 
             ["${fftwLibraryDirPath}/libfftw.a",
              "${fftwLibraryDirPath}/librfftw.a"]
-        System.out.println("sung linkSharedLibrary linkerArgs: " +
+        System.out.println("sung ________ linkSharedLibrary linkerArgs: " +
                 linkSharedLibrary.linkerArgs);
 
         // When the program runs, let the JVM know where to find the 
