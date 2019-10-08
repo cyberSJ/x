@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 build/
 install/
 
@@ -8,3 +9,8 @@ install/
 .gradle/
 gradle/
 gradlew*
+=======
+*.swp
+*.vim_session
+*.pyc
+>>>>>>> 48720a16e72c6d24e85252c5d558a84681e6faf6
