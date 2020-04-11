@@ -287,29 +287,161 @@
 #plt.show()
 #plt
 # =================================================================================================
-from sklearn.datasets import make_moons
-X, y = make_moons(n_samples=100, noise=0.25, random_state=3)
+#from sklearn.datasets import make_moons
+#X, y = make_moons(n_samples=100, noise=0.25, random_state=3)
+#
+#from sklearn.model_selection import train_test_split
+#XTrain, XTest, yTrain, yTest = train_test_split(X, y, stratify=y, random_state=42)
+#
+#from sklearn.ensemble import RandomForestClassifier
+#randomForest = RandomForestClassifier(n_estimators=5, random_state=2)
+#randomForest.fit(XTrain, yTrain)
+#
+#import matplotlib.pyplot as plt
+#figure, plots = plt.subplots(2, 3, figsize=(20, 10))
+#for index, (plot, tree) in enumerate(zip(plots.ravel(), randomForest.estimators_)):
+#    plot.set_title("Tree index: {}".format(index))
+#
+#    import mglearn
+#    mglearn.plots.plot_tree_partition(XTrain, yTrain, tree, ax=plot)
+#
+## The last 6th plot is the overall random forest that combines all trees.
+#lastPlot = plots[-1, -1]
+#mglearn.plots.plot_2d_separator(randomForest, XTrain, fill=True, ax=lastPlot, alpha=0.4)
+#lastPlot.set_title("Random Forest")
+#
+## Plogt the train data onto the last plot.
+#mglearn.discrete_scatter(XTrain[:, 0], XTrain[:, 1], yTrain)
+#plt.show()
+# =================================================================================================
+#
+#from sklearn.datasets import load_breast_cancer
+#cancer = load_breast_cancer()
+#
+#from sklearn.model_selection import train_test_split
+#XTrain, XTest, yTrain, yTest = train_test_split(cancer.data, cancer.target, random_state=0)
+#
+#from sklearn.ensemble import RandomForestClassifier
+#forest = RandomForestClassifier(n_estimators=100, random_state=0)
+#forest.fit(XTrain, yTrain)
+#
+## Find the accuracy of the model.
+#print("Train set accuracy: {:.3f}".format(forest.score(XTrain, yTrain)))
+#print("Test set accuracy : {:.3f}".format(forest.score(XTest, yTest)))
+#
+## What to do with the predictions? Visualize the importances of features.
+#import matplotlib.pyplot as plt
+#import numpy as np
+#def plotFeatureImportancesForCancer(cancerBunch, model):
+#    featureCount = cancerBunch.data.shape[1]
+#    plt.barh(np.arange(featureCount), width=model.feature_importances_)
+#    plt.yticks(np.arange(featureCount), cancerBunch.feature_names)
+#    plt.ylabel("Features")
+#    plt.xlabel("Feature importance")
+#    plt.ylim(-1, featureCount)
+#    
+#plotFeatureImportancesForCancer(cancer, forest)
+#plt.show()
+# =================================================================================================
+#from sklearn.datasets import load_breast_cancer
+#cancer = load_breast_cancer()
+#
+#from sklearn.model_selection import train_test_split
+#XTrain, XTest, yTrain, yTest = train_test_split(cancer.data, cancer.target, random_state=0)
+#
+#from sklearn.ensemble import GradientBoostingClassifier
+#gb = GradientBoostingClassifier(random_state=0, max_depth=1)
+#gb.fit(XTrain, yTrain)
+#
+#print("Train accuracy  : {:.3f}".format(gb.score(XTrain, yTrain)))
+#print("Testing accuracy: {:.3f}".format(gb.score(XTest, yTest)))
+#
+#import matplotlib.pyplot as plt
+#import numpy as np
+#def plotFeatureImportances(cancerBunch, model):
+#    featureCount = cancerBunch.data.shape[1]
+#    plt.barh(np.arange(featureCount), width=model.feature_importances_)
+#    plt.yticks(np.arange(featureCount), cancerBunch.feature_names)
+#
+#plotFeatureImportances(cancer, gb)
+#plt.show()
+# =================================================================================================o
 
-from sklearn.model_selection import train_test_split
-XTrain, XTest, yTrain, yTest = train_test_split(X, y, stratify=y, random_state=42)
+from sklearn.datasets import make_blobs
+X, y = make_blobs(centers=4, random_state=8)
+y = y % 2
+print("X shape: ", X.shape)
+print("y:\n", y)
 
-from sklearn.ensemble import RandomForestClassifier
-randomForest = RandomForestClassifier(n_estimators=5, random_state=2)
-randomForest.fit(XTrain, yTrain)
+import mglearn
+mglearn.discrete_scatter(X[:, 0], X[:, 1], y)
 
 import matplotlib.pyplot as plt
-figure, plots = plt.subplots(2, 3, figsize=(20, 10))
-for index, (plot, tree) in enumerate(zip(plots.ravel(), randomForest.estimators_)):
-    plot.set_title("Tree index: {}".format(index))
+plt.xlabel("Feature 0")
+plt.ylabel("Feature 1")
 
-    import mglearn
-    mglearn.plots.plot_tree_partition(XTrain, yTrain, tree, ax=plot)
+from sklearn.svm import LinearSVC
+svm = LinearSVC().fit(X, y)
 
-# The last 6th plot is the overall random forest that combines all trees.
-lastPlot = plots[-1, -1]
-mglearn.plots.plot_2d_separator(randomForest, XTrain, fill=True, ax=lastPlot, alpha=0.4)
-lastPlot.set_title("Random Forest")
+mglearn.plots.plot_2d_separator(svm, X)
 
-# Plogt the train data onto the last plot.
-mglearn.discrete_scatter(XTrain[:, 0], XTrain[:, 1], yTrain)
+import numpy as np
+# tupleOfInputs: (100x2 matrix), 100x1 array). So there are 2 elements in the tuple.
+tupleOfInputs = [X, X[:, 1:] ** 2]
+
+# hstack() can horizontally stack each element in the tuple. So the result becomes 100x3 matrix.
+XnewFeature = np.hstack(tupleOfInputs)
+
+from mpl_toolkits.mplot3d import Axes3D, axes3d
+figure = plt.figure()
+
+ax = Axes3D(fig=figure, elev=-152, azim=-26)
+
+class0Index = (y == 0)
+ax.scatter(XnewFeature[class0Index, 0],
+           XnewFeature[class0Index, 1],
+           XnewFeature[class0Index, 2],
+           c='blue',
+           cmap=mglearn.cm2,
+           s=60,
+           edgecolor='k')
+ax.scatter(XnewFeature[~class0Index, 0],
+           XnewFeature[~class0Index, 1],
+           XnewFeature[~class0Index, 2],
+           c='red',
+           marker='^',
+           cmap=mglearn.cm2,
+           s=60,
+           edgecolor='k')
+ax.set_xlabel("Feature 0")
+ax.set_ylabel("Feature 1")
+ax.set_zlabel("Feature 1 ** 2")
+
+svm = LinearSVC().fit(XnewFeature, y)
+
+# Create an f0-axis value for the decision plane.
+f0AxisValues = np.linspace(XnewFeature[:, 0].min() - 2, XnewFeature[:,0].max() + 2, 50)
+print("f0AxisValues: \n", f0AxisValues)
+
+# Create an f1-axis value for the decision plane.
+f1AxisValues = np.linspace(XnewFeature[:, 1].min() - 2, XnewFeature[:,1].max() + 2, 50)
+
+# Apply the equation of plane to produce the f2-axis values.
+# But first, we need the points in the f0f1-plane
+XX, YY = np.meshgrid(f0AxisValues, f1AxisValues)
+print("XX;\n", XX)
+print("YY;\n", YY)
+
+# Now apply the equation of the plane. 
+# coef[0] belongs to feature0.
+# coef[1] belongs to feature1.
+# The ravel() is needed because the original coef is 1x3 array, whereas raveled version is 3-element list, and we need a
+# list because we want to index the coef array with just a single index. For the original 1x3 array, we have to use like
+# coef[0,0], coef[0,1], coef[0,2]. In the 3-lement array, we can just access like coef[0], coef[1], and coef[2].
+coef = svm.coef_.ravel()
+
+# intercept is needed for the equation of the plane.
+intercept = svm.intercept_
+ZZ = (coef[0] * XX + coef[1] * YY + intercept) / -coef[2]
+ax.plot_surface(XX, YY, ZZ, rstride=8, cstride=8, alpha=0.3)
 plt.show()
