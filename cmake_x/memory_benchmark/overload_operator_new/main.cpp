@@ -2,7 +2,12 @@
 
 int main(int argc, char** argv)
 {
-    MyClass* myClass = (MyClass*) new MyClass;
+    //MyClass* myClass = new MyClass;
+    MyClass myClass;
+    myClass.print();
     //delete myClass;
-    myClass = new MyClass;
+    //myClass = new MyClass;
+    //MyClass* myClass2 = new MyClass;
+    //delete myClass2;
+    //MyClass* myClass3 = new MyClass;
 }

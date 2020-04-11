@@ -22,3 +22,8 @@ void MyClass::operator delete(void* pointer)
 
     free(pointer);
 }
+
+void MyClass::print()
+{
+    std::cout << "m_int: " << m_int << std::endl;
+}
