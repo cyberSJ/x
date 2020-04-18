@@ -367,81 +367,133 @@
 #plt.show()
 # =================================================================================================o
 
-from sklearn.datasets import make_blobs
-X, y = make_blobs(centers=4, random_state=8)
-y = y % 2
-print("X shape: ", X.shape)
-print("y:\n", y)
+#from sklearn.datasets import make_blobs
+#X, y = make_blobs(centers=4, random_state=8)
+#y = y % 2
+#print("X shape: ", X.shape)
+#print("y:\n", y)
+#
+#import mglearn
+##mglearn.discrete_scatter(X[:, 0], X[:, 1], y)
+#
+#import matplotlib.pyplot as plt
+##plt.xlabel("Feature 0")
+##plt.ylabel("Feature 1")
+#
+#from sklearn.svm import LinearSVC
+#svm = LinearSVC().fit(X, y)
+#
+##mglearn.plots.plot_2d_separator(svm, X)
+#
+#import numpy as np
+## tupleOfInputs: (100x2 matrix), 100x1 array). So there are 2 elements in the tuple.
+#tupleOfInputs = [X, X[:, 1:] ** 2]
+#
+## hstack() can horizontally stack each element in the tuple. So the result becomes 100x3 matrix.
+#XnewFeature = np.hstack(tupleOfInputs)
+#
+#from mpl_toolkits.mplot3d import Axes3D, axes3d
+##figure = plt.figure()
+#
+##ax = Axes3D(fig=figure, elev=-152, azim=-26)
+##
+##class0Index = (y == 0)
+##ax.scatter(XnewFeature[class0Index, 0],
+##           XnewFeature[class0Index, 1],
+##           XnewFeature[class0Index, 2],
+##           c='blue',
+##           cmap=mglearn.cm2,
+##           s=60,
+##           edgecolor='k')
+##ax.scatter(XnewFeature[~class0Index, 0],
+##           XnewFeature[~class0Index, 1],
+##           XnewFeature[~class0Index, 2],
+##           c='red',
+##           marker='^',
+##           cmap=mglearn.cm2,
+##           s=60,
+##           edgecolor='k')
+##ax.set_xlabel("Feature 0")
+##ax.set_ylabel("Feature 1")
+##ax.set_zlabel("Feature 1 ** 2")
+#
+#svm = LinearSVC().fit(XnewFeature, y)
+#
+## Create an f0-axis value for the decision plane.
+#f0AxisValues = np.linspace(XnewFeature[:, 0].min() - 2, XnewFeature[:,0].max() + 2, 50)
+#print("f0AxisValues: \n", f0AxisValues)
+#
+## Create an f1-axis value for the decision plane.
+#f1AxisValues = np.linspace(XnewFeature[:, 1].min() - 2, XnewFeature[:,1].max() + 2, 50)
+#
+## Apply the equation of plane to produce the f2-axis values.
+## But first, we need the points in the f0f1-plane
+#XX, YY = np.meshgrid(f0AxisValues, f1AxisValues)
+#print("XX;\n", XX)
+#print("YY;\n", YY)
+#
+## Now apply the equation of the plane. 
+## coef[0] belongs to feature0.
+## coef[1] belongs to feature1.
+## The ravel() is needed because the original coef is 1x3 array, whereas raveled version is 3-element list, and we need a
+## list because we want to index the coef array with just a single index. For the original 1x3 array, we have to use like
+## coef[0,0], coef[0,1], coef[0,2]. In the 3-lement array, we can just access like coef[0], coef[1], and coef[2].
+#coef = svm.coef_.ravel()
+#
+## intercept is needed for the equation of the plane.
+#intercept = svm.intercept_
+#ZZ = (coef[0] * XX + coef[1] * YY + intercept) / -coef[2]
+##ax.plot_surface(XX, YY, ZZ, rstride=8, cstride=8, alpha=0.3)
+#
+#ZZ = YY ** 2
+#locationRelativeToDecisionBoundary = svm.decision_function(np.c_[XX.ravel(), YY.ravel(), ZZ.ravel()])
+#
+#import matplotlib.pyplot as plt
+#import mglearn
+#plt.contourf(XX, YY, locationRelativeToDecisionBoundary.reshape(XX.shape),
+#             levels=[locationRelativeToDecisionBoundary.min(), 0, locationRelativeToDecisionBoundary.max()],
+#             cmap=mglearn.cm2,
+#             alpha=0.5)
+#
+#mglearn.discrete_scatter(X[:,0], X[:,1], y)
+#plt.xlabel("Feature 0")
+#plt.ylabel("Feature 1")
+#plt.show()
+# =================================================================================================o
 
 import mglearn
-mglearn.discrete_scatter(X[:, 0], X[:, 1], y)
+X, y = mglearn.tools.make_handcrafted_dataset()
+
+
+def plotSvm(plot, samples, labels, importance, gamma):
+    from sklearn.svm import SVC
+    svm = SVC(kernel="rbf", C=importance, gamma=gamma).fit(X, y)
+
+    mglearn.plots.plot_2d_separator(svm, samples, eps=0.5, ax=plot)
+
+    mglearn.discrete_scatter(samples[:,0], samples[:,1], labels, ax=plot)
+
+    # Select the feature-coordinates of the support vectors.
+    supportVector = svm.support_vectors_
+
+    # Re-Draw the support vector. This involves re-knowing their class labels.
+    supportVectorClassLabels = svm.dual_coef_.ravel() > 0
+
+    mglearn.discrete_scatter(supportVector[:,0], 
+                             supportVector[:,1],
+                             supportVectorClassLabels,
+                             s=15,
+                             markeredgewidth=3,
+                             ax=plot)
+
+    plot.set_title("C: {:.2f}  gamma: {:.2f}".format(importance, gamma))
 
 import matplotlib.pyplot as plt
-plt.xlabel("Feature 0")
-plt.ylabel("Feature 1")
+fig, axes = plt.subplots(3, 3)
 
-from sklearn.svm import LinearSVC
-svm = LinearSVC().fit(X, y)
+for axRow, importance in zip(axes, [0.1, 1, 1e3]):
+    for ax, gamma in zip(axRow, [0.1, 1, 10]):
+        plotSvm(ax, X, y, importance, gamma)
 
-mglearn.plots.plot_2d_separator(svm, X)
-
-import numpy as np
-# tupleOfInputs: (100x2 matrix), 100x1 array). So there are 2 elements in the tuple.
-tupleOfInputs = [X, X[:, 1:] ** 2]
-
-# hstack() can horizontally stack each element in the tuple. So the result becomes 100x3 matrix.
-XnewFeature = np.hstack(tupleOfInputs)
-
-from mpl_toolkits.mplot3d import Axes3D, axes3d
-figure = plt.figure()
-
-ax = Axes3D(fig=figure, elev=-152, azim=-26)
-
-class0Index = (y == 0)
-ax.scatter(XnewFeature[class0Index, 0],
-           XnewFeature[class0Index, 1],
-           XnewFeature[class0Index, 2],
-           c='blue',
-           cmap=mglearn.cm2,
-           s=60,
-           edgecolor='k')
-ax.scatter(XnewFeature[~class0Index, 0],
-           XnewFeature[~class0Index, 1],
-           XnewFeature[~class0Index, 2],
-           c='red',
-           marker='^',
-           cmap=mglearn.cm2,
-           s=60,
-           edgecolor='k')
-ax.set_xlabel("Feature 0")
-ax.set_ylabel("Feature 1")
-ax.set_zlabel("Feature 1 ** 2")
-
-svm = LinearSVC().fit(XnewFeature, y)
-
-# Create an f0-axis value for the decision plane.
-f0AxisValues = np.linspace(XnewFeature[:, 0].min() - 2, XnewFeature[:,0].max() + 2, 50)
-print("f0AxisValues: \n", f0AxisValues)
-
-# Create an f1-axis value for the decision plane.
-f1AxisValues = np.linspace(XnewFeature[:, 1].min() - 2, XnewFeature[:,1].max() + 2, 50)
-
-# Apply the equation of plane to produce the f2-axis values.
-# But first, we need the points in the f0f1-plane
-XX, YY = np.meshgrid(f0AxisValues, f1AxisValues)
-print("XX;\n", XX)
-print("YY;\n", YY)
-
-# Now apply the equation of the plane. 
-# coef[0] belongs to feature0.
-# coef[1] belongs to feature1.
-# The ravel() is needed because the original coef is 1x3 array, whereas raveled version is 3-element list, and we need a
-# list because we want to index the coef array with just a single index. For the original 1x3 array, we have to use like
-# coef[0,0], coef[0,1], coef[0,2]. In the 3-lement array, we can just access like coef[0], coef[1], and coef[2].
-coef = svm.coef_.ravel()
-
-# intercept is needed for the equation of the plane.
-intercept = svm.intercept_
-ZZ = (coef[0] * XX + coef[1] * YY + intercept) / -coef[2]
-ax.plot_surface(XX, YY, ZZ, rstride=8, cstride=8, alpha=0.3)
+plt.legend()
 plt.show()
