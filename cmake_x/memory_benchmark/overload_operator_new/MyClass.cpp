@@ -27,3 +27,8 @@ void MyClass::print()
 {
     std::cout << "m_int: " << m_int << std::endl;
 }
+
+void MySubClass::print()
+{
+    std::cout << "MySubClass::print()" << std::endl;
+}

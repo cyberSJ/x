@@ -5,6 +5,10 @@ int main(int argc, char** argv)
     //MyClass* myClass = new MyClass;
     MyClass myClass;
     myClass.print();
+
+    MySubClass mySubClass;
+    mySubClass.print();
+
     //delete myClass;
     //myClass = new MyClass;
     //MyClass* myClass2 = new MyClass;
