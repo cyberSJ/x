@@ -461,39 +461,52 @@
 #plt.show()
 # =================================================================================================o
 
-import mglearn
-X, y = mglearn.tools.make_handcrafted_dataset()
+#import mglearn
+#X, y = mglearn.tools.make_handcrafted_dataset()
+#
+#
+#def plotSvm(plot, samples, labels, importance, gamma):
+#    from sklearn.svm import SVC
+#    svm = SVC(kernel="rbf", C=importance, gamma=gamma).fit(X, y)
+#
+#    mglearn.plots.plot_2d_separator(svm, samples, eps=0.5, ax=plot)
+#
+#    mglearn.discrete_scatter(samples[:,0], samples[:,1], labels, ax=plot)
+#
+#    # Select the feature-coordinates of the support vectors.
+#    supportVector = svm.support_vectors_
+#
+#    # Re-Draw the support vector. This involves re-knowing their class labels.
+#    supportVectorClassLabels = svm.dual_coef_.ravel() > 0
+#
+#    mglearn.discrete_scatter(supportVector[:,0], 
+#                             supportVector[:,1],
+#                             supportVectorClassLabels,
+#                             s=15,
+#                             markeredgewidth=3,
+#                             ax=plot)
+#
+#    plot.set_title("C: {:.2f}  gamma: {:.2f}".format(importance, gamma))
+#
+#import matplotlib.pyplot as plt
+#fig, axes = plt.subplots(3, 3)
+#
+#for axRow, importance in zip(axes, [0.1, 1, 1e3]):
+#    for ax, gamma in zip(axRow, [0.1, 1, 10]):
+#        plotSvm(ax, X, y, importance, gamma)
+#
+#plt.legend()
+#plt.show()
+# =================================================================================================o
 
+from sklearn.datasets import load_breast_cancer
+cancer = load_breast_cancer()
 
-def plotSvm(plot, samples, labels, importance, gamma):
-    from sklearn.svm import SVC
-    svm = SVC(kernel="rbf", C=importance, gamma=gamma).fit(X, y)
+from sklearn.model_selection import train_test_split
+XTrain, XTest, yTrain, yTest = train_test_split(cancer.data, cancer.target, random_state=0)
 
-    mglearn.plots.plot_2d_separator(svm, samples, eps=0.5, ax=plot)
-
-    mglearn.discrete_scatter(samples[:,0], samples[:,1], labels, ax=plot)
-
-    # Select the feature-coordinates of the support vectors.
-    supportVector = svm.support_vectors_
-
-    # Re-Draw the support vector. This involves re-knowing their class labels.
-    supportVectorClassLabels = svm.dual_coef_.ravel() > 0
-
-    mglearn.discrete_scatter(supportVector[:,0], 
-                             supportVector[:,1],
-                             supportVectorClassLabels,
-                             s=15,
-                             markeredgewidth=3,
-                             ax=plot)
-
-    plot.set_title("C: {:.2f}  gamma: {:.2f}".format(importance, gamma))
-
-import matplotlib.pyplot as plt
-fig, axes = plt.subplots(3, 3)
-
-for axRow, importance in zip(axes, [0.1, 1, 1e3]):
-    for ax, gamma in zip(axRow, [0.1, 1, 10]):
-        plotSvm(ax, X, y, importance, gamma)
-
-plt.legend()
-plt.show()
+from sklearn.svm import SVC
+svc = SVC()
+svc.fit(XTrain, yTrain)
+print("Train accuracy: {:.2f}".format(svc.score(XTrain, yTrain)))
+print("Test accuracy : {:.2f}".format(svc.score(XTest, yTest)))
