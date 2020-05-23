@@ -1,0 +1,51 @@
+syntax = "proto3";
+
+enum Kind {
+    KIND_ONE = 0;
+    KIND_TWO = 1;
+    KIND_THREE = 2;
+}
+
+message SomeHeader {
+    Kind kind = 1;
+}
+
+enum SubMessageType {
+    CAT_ONE = 0;
+    CAT_TWO = 1;
+}
+
+enum SubMessageOneType {
+    SUB_MESSAGE_ONE_TYPE_A = 0;
+    SUB_MESSAGE_ONE_TYPE_B = 1;
+}
+
+message Timestamp {
+    uint32 seconds = 1;
+    uint32 nanoseconds = 2;
+}
+
+message SubMessageOne {
+    Timestamp timestamp = 1;
+    SubMessageOneType type = 2;
+    float f = 3;
+    float b = 4;
+    float s = 5;
+    string x = 6;
+    string y = 7;
+    string z = 8;
+}
+
+message SubMessageTwo {
+    string abcd = 1;
+}
+
+message TopMessage {
+    Kind kind = 1;
+    SubMessageType type = 2;
+    uint64 timestamp = 3;
+    oneof SubMessage {
+        SubMessageOne sub_message_one = 4;
+        SubMessageTwo sub_message_two = 5;
+    }
+}

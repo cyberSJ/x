@@ -3,3 +3,6 @@ install/
 
 # Vim temp files
 *.swp
+
+# Generated proto files.
+*.pb.*
