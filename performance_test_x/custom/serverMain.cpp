@@ -8,11 +8,15 @@
 
 using boost::asio::ip::tcp;
 
+enum { max_length = 1024 };
+
 class session
 {
 public:
   session(boost::asio::io_service& io_service)
-    : socket_(io_service)
+    : socket_(io_service),
+      top(prepareMessage()),
+      messageSizeBytes(top.ByteSize())
   {
   }
 
@@ -48,30 +52,30 @@ public:
 
   void start()
   {
-      TopMessage top = prepareMessage();
-        std::string message;
-
-	int repetition = 1e6;
-    auto start = std::chrono::high_resolution_clock::now();
-	for (int i = 0; i < repetition; ++i)
+    while (true)
     {
+        // Keep giving back a response to the client.
+        boost::asio::read(socket_, boost::asio::buffer(reply, messageSizeBytes));
+        top.ParseFromString(reply);
+
         top.SerializeToString(&message);
         boost::asio::write(
             socket_,
             boost::asio::buffer(message));
     }
-    auto stop = std::chrono::high_resolution_clock::now();
-    auto durationUs = std::chrono::duration_cast<std::chrono::microseconds>(stop - start);
 
-    auto now = std::chrono::system_clock::now().time_since_epoch();
-    top.set_timestamp(now.count());
+    //auto stop = std::chrono::high_resolution_clock::now();
+    //auto durationUs = std::chrono::duration_cast<std::chrono::microseconds>(stop - start);
 
-    top.SerializeToString(&message);
-    boost::asio::write(
-        socket_,
-        boost::asio::buffer(message));
-    std::cout << "Finished sending." << std::endl;
-    std::cout << "Throughput: " << durationUs.count() << " us for " << repetition << " messages each with 71 bytes" << std::endl;
+    //auto now = std::chrono::system_clock::now().time_since_epoch();
+    //top.set_timestamp(now.count());
+
+    //top.SerializeToString(&message);
+    //boost::asio::write(
+    //    socket_,
+    //    boost::asio::buffer(message));
+    //std::cout << "Finished sending." << std::endl;
+    //std::cout << "Throughput: " << durationUs.count() << " us for " << repetition << " messages each with 71 bytes" << std::endl;
     // Throughput: 2412389 us for 1000000 messages each with 71 bytes
 
     //socket_.async_read_some(boost::asio::buffer(data_, max_length),
@@ -79,6 +83,18 @@ public:
     //      boost::asio::placeholders::error,
     //      boost::asio::placeholders::bytes_transferred));
   }
+
+  //void exchangeData()
+  //{
+  //  top.SerializeToString(&message);
+  //  boost::asio::write(
+  //      socket_,
+  //      boost::asio::buffer(message));
+
+  //  boost::asio::read(socket_, boost::asio::buffer(reply.data(), messageSizeBytes));
+  //  top.ParseFromString(reply);
+  //  std::cout << "Server received client response: " << top.DebugString() << std::endl;
+  //}
 
 private:
   void handle_read(const boost::system::error_code& error,
@@ -118,6 +134,10 @@ private:
   tcp::socket socket_;
   enum { max_length = 1024 };
   char data_[max_length];
+  TopMessage top;
+  int messageSizeBytes;
+  std::string message;
+  char reply[max_length];
 };
 
 class server
