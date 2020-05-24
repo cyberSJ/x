@@ -50,6 +50,10 @@ message TopMessage {
     }
 }
 
+message StreamRequest{
+}
+
 service MyServer {
     rpc sendTopMessage (TopMessage) returns (TopMessage) {}
+    rpc sendStreamRequest (StreamRequest) returns (stream TopMessage) {}
 }

@@ -93,11 +93,8 @@ int main(int argc, char* argv[])
 
     //auto durationUs = std::chrono::duration_cast<std::chrono::microseconds>(stop - start);
     //std::cout << "Throughput: " << durationUs.count() << " us for " << repetition << " messages each with " << messageSizeBytes << " bytes" << std::endl;
-    // Throughput: 2492734 us for 1000000 messages each with 71 bytes
     
     //std::cout << "Latency: " << latencyNs << " ns" << std::endl;
-    // Latency: 80195222 ns
-    // But this is probably the deserialization time + other things, rather than network packet travel time.
 
 	//std::cout << "Press ENTER to exit." << std::endl;
     //std::string line;
