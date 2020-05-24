@@ -49,3 +49,7 @@ message TopMessage {
         SubMessageTwo sub_message_two = 5;
     }
 }
+
+service MyServer {
+    rpc sendTopMessage (TopMessage) returns (TopMessage) {}
+}

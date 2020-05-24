@@ -81,7 +81,7 @@ int main(int argc, char* argv[])
     int numMessagesExchanged = 2 * repetition;
     std::cout << "Stats: " << durationUs.count() << " us for " << numMessagesExchanged << " messages each with " << messageSizeBytes << " bytes" << std::endl;
     std::cout << "Latency: " << (double)(durationUs.count()) / (double)(numMessagesExchanged) << " usec" << std::endl;
-    std::cout << "Throughput: " << (double)(numMessagesExchanged) / (double)(durationUs.count() / 1e6) << " messages/sec" << std::endl;
+    std::cout << "Throughput: " << (double)(numMessagesExchanged) / (double)(durationUs.count() / 1.0e6) << " messages/sec" << std::endl;
     // Stats: 2762441 us for 200000 messages each with 71 bytes
     // Latency: 13.8122 usec
     // Throughput: 72399.7 messages/sec
