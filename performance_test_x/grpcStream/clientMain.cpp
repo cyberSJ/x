@@ -3,7 +3,7 @@
 #include "Message.grpc.pb.h"
 int main(int argc, char** argv)
 {
-    std::shared_ptr<grpc::Channel> channel = grpc::CreateChannel("0.0.0.0:30002", grpc::InsecureChannelCredentials());
+    std::shared_ptr<grpc::Channel> channel = grpc::CreateChannel("127.0.0.1:30002", grpc::InsecureChannelCredentials());
     std::unique_ptr<MyServer::Stub> stub(MyServer::NewStub(channel));
 
     StreamRequest request;

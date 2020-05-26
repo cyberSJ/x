@@ -66,7 +66,7 @@ void runServer()
 
   grpc::ServerBuilder builder;
 
-  std::string server_address("0.0.0.0:30002");
+  std::string server_address("127.0.0.1:30002");
   builder.AddListeningPort(server_address, grpc::InsecureServerCredentials());
   builder.RegisterService(&service);
 
